@@ -1,0 +1,140 @@
+body {
+    overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+    [data-aos] {
+        transform: none !important;
+        /* Disabilita trasformazioni su mobile */
+    }
+}
+
+#navbar .active {
+    color: var(--bs-light) !important;
+}
+
+#home .carousel-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    /* Overlay scuro per migliorare la leggibilità del testo */
+}
+
+#home .carousel-caption {
+    bottom: 40%;
+}
+
+/* Assicura che le immagini siano responsive */
+#home .carousel-item {
+    width: 100vw;
+    /* Occupa tutta la larghezza della viewport */
+    height: 100vh;
+    /* Occupa tutta l'altezza della viewport */
+}
+
+#home .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Assicura che l'immagine copra tutto lo spazio disponibile */
+}
+
+/* Nasconde eventuali contenuti che eccedono */
+#home .carousel {
+    width: 100vw;
+    /* Occupa tutta la larghezza della viewport */
+    margin-left: calc(-50vw + 50%);
+    /* Centra il carosello */
+}
+
+/* Riduci il padding per viewport piccoli */
+@media (max-width: 767px) {
+    #home .carousel {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+
+
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1);
+}
+.nav-link {
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, width 0.3s ease, left 0.3s ease;
+}
+.nav-link:hover{
+    transform: scale(1.1);
+}
+.btn {
+    transition: transform 0.3s ease;
+}
+.btn:hover{
+    transform: scale(1.1);
+}
+a {
+    transition: transform 0.3s ease;
+}
+a:hover{
+    transform: scale(1.1);
+}
+
+/* Stile per le onde come overlay */
+.hero-waves {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    overflow: hidden;
+    line-height: 0;
+    /* transform: rotate(180deg); */
+}
+
+.wave1 {
+    fill: rgba(0, 0, 0, 0.49);
+}
+
+.wave2 {
+    fill: rgba(0, 0, 0, 0.19);
+}
+
+.wave3 {
+    fill: rgb(0, 0, 0);
+}
+
+.wave1 use {
+    animation: moveWave 15s linear infinite;
+}
+
+.wave2 use {
+    animation: moveWave 12s linear infinite;
+}
+
+.wave3 use {
+    animation: moveWave 10s linear infinite;
+}
+
+@keyframes moveWave {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-400px);
+    }
+}
+
+#home,
+.hero-waves {
+    margin: 0;
+    padding: 0;
+}

@@ -146,7 +146,7 @@ function spawnProd1($row, $type, $conn)
     echo '<div class="col">
     <div class="card h-130 h-lg-150">
                     <div class="thumbnail position-relative">
-                        <img src="../IMG/Immagine WhatsApp 2024-11-01 ore 19.35.54_0990ef6f.png" class="card-img-top img-thumbnail" alt="...">
+                        <img src="../IMG/studio.png" class="card-img-top img-thumbnail" alt="...">
                             <div class="position-absolute top-50 start-50 translate-middle d-flex gap-3">
                             <button type="button" onclick="rewind' . $row['id'] . '()" class="btn btn-primary border-primary rounded-circle ">
                                 <i class="bi bi-skip-backward-fill fs-4"></i>
@@ -464,7 +464,7 @@ function spawnProd2($row, $type, $conn)
 {
     echo '<div class="col">
     <div class="card h-100 xl-h-130">
-                    <img src="../IMG/Immagine WhatsApp 2024-11-01 ore 19.35.54_0990ef6f.png" class="card-img-top img-thumbnail" alt="...">
+                    <img src="../IMG/studio.png" class="card-img-top img-thumbnail" alt="...">
                     
                     <div class="card-body">
                         <h5 class="text-primary card-title ">' . $row['title'] . '</h5>';
@@ -782,7 +782,7 @@ function spawnProd3($row, $type, $conn)
     echo '<div class="col">
     <div class="card h-130 h-lg-150">
                     <div class="thumbnail position-relative">
-                        <img src="../IMG/Immagine WhatsApp 2024-11-01 ore 19.35.54_0990ef6f.png" class="card-img-top img-thumbnail" alt="...">
+                        <img src="../IMG/studio.png" class="card-img-top img-thumbnail" alt="...">
                             <div class="position-absolute top-50 start-50 translate-middle d-flex gap-3">
                             <button type="button" onclick="rewind' . $row['id'] . '()" class="btn btn-primary border-primary rounded-circle ">
                                 <i class="bi bi-skip-backward-fill fs-4"></i>
@@ -1101,7 +1101,7 @@ function spawnProd4($row, $cur_price, $quantity)
     echo '<div class="col">
     <div class="card h-130 h-lg-150">
                     <div class="thumbnail position-relative">
-                        <img src="../IMG/Immagine WhatsApp 2024-11-01 ore 19.35.54_0990ef6f.png" class="card-img-top img-thumbnail" alt="...">
+                        <img src="../IMG/studio.png" class="card-img-top img-thumbnail" alt="...">
                             <div class="position-absolute top-50 start-50 translate-middle d-flex gap-3">
                             <button type="button" onclick="rewind' . $row['id'] . '()" class="btn btn-primary border-primary rounded-circle ">
                                 <i class="bi bi-skip-backward-fill fs-4"></i>
@@ -1279,13 +1279,13 @@ function displayCart()
         } else {
             echo '<div class="container text-center">
             <h1 class="text-center text-primary">Your cart is empty!</h1>
-            <h3 class="text-center">Let\'s go to the <a class="text-secondary" href="./products.php">shop</a> to add some products!</h3>
+            <h3 class="text-center">Let\'s go to the <a class="text-secondary" href="./FRONTEND/products.php">shop</a> to add some products!</h3>
         </div>';
         }
     } else {
         echo '<div class="container text-center">
             <h1 class="text-center text-primary">Your cart is empty!</h1>
-            <h3 class="text-center">Let\'s go to the <a class="text-secondary" href="./products.php">shop</a> to add some products!</h3>
+            <h3 class="text-center">Let\'s go to the <a class="text-secondary" href="./FRONTEND/products.php">shop</a> to add some products!</h3>
         </div>';
     }
 }
@@ -1295,7 +1295,7 @@ function cartItem($row)
                 <div class="card mb-3" style="max-height: 130px, overflow: hidden;">
                     <div class="row g-0">
                         <div class="col-4 d-flex  align-items-start">
-                            <img src="../IMG/Immagine WhatsApp 2024-11-01 ore 19.35.54_0990ef6f.jpg" class="m-2 img-fluid rounded-start " alt="...">
+                            <img src="../IMG/studio.jpg" class="m-2 img-fluid rounded-start " alt="...">
                         </div>
                         <div class="col-8">
                             <div class="card-body">
@@ -1367,4 +1367,52 @@ function debug($var)
     echo '<pre style="background-color: #f5f5f5; padding: 15px; margin: 10px; border: 1px solid #ddd;">';
     var_dump($var);
     echo '</pre>';
+}
+// Funzione per ottenere i file referenziati nel database
+function getReferencedFiles($conn, $table, $column)
+{
+    $referencedFiles = [];
+    $query = "SELECT $column FROM $table";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $referencedFiles[] = $row[$column];
+        }
+    }
+
+    return $referencedFiles;
+}
+
+// Funzione per cancellare i file inutilizzati in una cartella
+function deleteUnusedFiles($directory, $referencedFiles)
+{
+    $files = scandir($directory);
+
+    foreach ($files as $file) {
+        if ($file !== '.' && $file !== '..') {
+            $filePath = $directory .  $file;
+
+            // Se il file non è referenziato nel database, cancellalo
+            if (!in_array($filePath, $referencedFiles)) {
+                if (is_file($filePath)) {
+                    error_log('Deleting: ' . $filePath);
+                    if (unlink($filePath)) {
+                        echo "<script>console.log('Deleted: $filePath<br>');</script>";
+                    } else {
+                        echo "<script>console.log('Error deleting: $filePath<br>');</script>";
+                    }
+                }
+            }
+        }
+    }
+}
+function cleanupUnusedFiles($conn)
+{
+    // Ottieni i file referenziati nel database
+    $audioFiles = getReferencedFiles($conn, 'product', 'audiopath');
+    $productFiles = getReferencedFiles($conn, 'product', 'productpath');
+    // Cancella i file inutilizzati nelle cartelle audio e products
+    deleteUnusedFiles('../AUDIO/', $audioFiles); // Sostituisci con il percorso corretto
+    deleteUnusedFiles('../PRODUCTS/', $productFiles); // Sostituisci con il percorso corretto 
 }

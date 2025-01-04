@@ -18,35 +18,38 @@ if (!isset($_SESSION['admin'])) {
     <link rel="stylesheet" href="../CSS/style.css">
 
     <link rel="stylesheet" href="../CSS/extra.css">
+    <script src="../JS/alertB.js"></script>
 </head>
 
 <body class="bg-dark text-light  mt-5 pt-5">
-    <nav class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
         <div class="container-fluid justify-content-center">
-            <a class="navbar-brand" href="index.php#home">
+            <a class="navbar-brand" href="../index.php#home">
                 <img src="../IMG/LOGO_NEW-crop.png" alt="" height="20">
             </a>
             <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse flex-grow-0 navbar-collapse col-lg-10" id="navbarSupportedContent">
-                <ul class="navbar-nav text-center me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link text-primary" aria-current="page" href="index.php#home">Home</a>
+            <div class="collapse navbar-collapse col-lg-10" id="navbarSupportedContent">
+                <ul class="nav nav-pills text-center me-auto flex-column flex-lg-row">
+                    <li class="nav-item mt-2 mt-md-0">
+                        <a class="nav-link text-primary" aria-current="page" href="../index.php#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="index.php#portfolio">About Us</a>
+                        <a class="nav-link text-primary" href="../index.php#aboutus">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="index.php#portfolio">Portfolio</a>
+                        <a class="nav-link text-primary" href="../index.php#portfolio">Portfolio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./products.php">Products</a>
+                        <a class="nav-link  text-primary" href="./products.php">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="index.php#social">Contacts</a>
+                        <a class="nav-link text-primary" href="../index.php#social">Contacts</a>
                     </li>
-
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <?php
@@ -203,11 +206,7 @@ if (!isset($_SESSION['admin'])) {
                 <span id="statusMessage">Operazione completata con successo</span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="d-grid">
 
-                <button class="btn btn-primary" name="update" onclick="location.reload()" type="button">UPDATE</button>
-
-            </div>
         </div>
     </div>
 
@@ -233,31 +232,17 @@ if (!isset($_SESSION['admin'])) {
                 .then(data => {
                     console.log("Response:", data); // Log per debug
                     if (data.success) {
-
-                        showPopup("Operazione completata", "success");
-
+                        sessionStorage.setItem('alertMessage', 'Operation completed');
+                        sessionStorage.setItem('alertColor', 'success');
+                        location.reload();
                     } else {
-                        showPopup("Errore: " + data.message, "danger");
+                        alertB("Errore: " + data.message, "danger");
                     }
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
                     alert("Errore nella risposta del server: " + error.message);
                 });
-        }
-
-        function showPopup(message, type) {
-            const alertBox = document.getElementById("statusAlert");
-            const alertMessage = document.getElementById("statusMessage");
-
-            alertMessage.textContent = message; // Imposta il messaggio
-            alertBox.className = `alert alert-${type} alert-dismissible fade show`; // Imposta il tipo di alert (success, danger, ecc.)
-            alertBox.style.display = 'block'; // Mostra l'alert
-
-            // Nascondi l'alert automaticamente dopo 3 secondi
-            setTimeout(() => {
-                alertBox.classList.remove("show"); // Trigger per la dissolvenza
-            }, 3000);
         }
     </script>
     <div class="d-flex" style="height: 100px;">

@@ -1,8 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-ob_start(); // Inizia il buffer di output
 
 include './utility.php';
 session_start();
@@ -55,6 +51,7 @@ switch ($data['action']) {
 
             loadCart($conn, 'refresh');
             echo json_encode(['success' => true]);
+            exit();
         }
         break;
     case 'delete':
@@ -73,6 +70,7 @@ switch ($data['action']) {
 
             loadCart($conn, 'refresh');
             echo json_encode(['success' => true]);
+            exit();
         }
         break;
     case 'decrease':
@@ -90,6 +88,7 @@ switch ($data['action']) {
                 $stmt->close();
                 loadCart($conn, 'refresh');
                 echo json_encode(['success' => true]);
+                exit();
             }
         } else {
             $query = "DELETE FROM order_detail WHERE order_id = ? AND prod_id = ?";
@@ -99,6 +98,7 @@ switch ($data['action']) {
                 $stmt->close();
                 loadCart($conn, 'refresh');
                 echo json_encode(['success' => true]);
+                exit();
             }
         }
 
@@ -120,11 +120,12 @@ switch ($data['action']) {
                 $stmt->bind_param("s", $item['id']);
                 if ($stmt->execute()) {
                     $stmt->close();
-                    unset($_SESSION['cart'], $_SESSION['orid']);
-                    loadCart($conn, 'load');
-                    echo json_encode(['success' => true]);
                 }
             }
+            unset($_SESSION['cart'], $_SESSION['orid']);
+            loadCart($conn, 'load');
+            echo json_encode(['success' => true]);
+            exit();
         } else {
             echo json_encode(['success' => false, 'message' => 'Error during the checkout']);
         }

@@ -27,10 +27,12 @@ if (!isset($_SESSION['username'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/extra.css">
+    <script src="../JS/alertB.js"></script>
+    <script>
+        let activeAudio = null;
+    </script>
 </head>
-<script>
-    let activeAudio = null;
-</script>
+
 
 <body class="bg-dark text-light  mt-5 pt-5">
     <!-- Spinner Overlay -->
@@ -41,7 +43,7 @@ if (!isset($_SESSION['username'])) {
     </div>
     <nav id="navbar" class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
         <div class="container-fluid justify-content-center">
-            <a class="navbar-brand" href="./index.php#home">
+            <a class="navbar-brand" href="../index.php#home">
                 <img src="../IMG/LOGO_NEW-crop.png" alt="" height="20">
             </a>
             <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,13 +52,13 @@ if (!isset($_SESSION['username'])) {
             <div class="collapse navbar-collapse col-lg-10" id="navbarSupportedContent">
                 <ul class="nav nav-pills text-center me-auto flex-column flex-lg-row">
                     <li class="nav-item mt-2 mt-md-0">
-                        <a class="nav-link text-primary" aria-current="page" href="./index.php#home">Home</a>
+                        <a class="nav-link text-primary" aria-current="page" href="../index.php#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#aboutus">About Us</a>
+                        <a class="nav-link text-primary" href="../index.php#aboutus">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#portfolio">Portfolio</a>
+                        <a class="nav-link text-primary" href="../index.php#portfolio">Portfolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link  text-primary" href="./products.php">Products</a>
@@ -226,7 +228,6 @@ if (!isset($_SESSION['username'])) {
 
         function addTocart(id, action) {
             showSpinner();
-
             console.log("Sending data:", {
 
                 id,
@@ -248,18 +249,34 @@ if (!isset($_SESSION['username'])) {
                     console.log("Response:", data); // Log per debug
                     if (data.success) {
                         hideSpinner();
-                        alert("Operation completed", "success");
-                        location.reload();
+                        if (action === 'add') {
+                            sessionStorage.setItem('alertMessage', 'Product added to cart');
+                            sessionStorage.setItem('alertColor', 'success');
+                            location.reload();
+                        } else if (action === 'delete' || action === 'decrease') {
+                            sessionStorage.setItem('alertMessage', 'Product removed from cart');
+                            sessionStorage.setItem('alertColor', 'success');
+                            location.reload();
+
+                        } else if (action === 'checkout') {
+                            sessionStorage.setItem('alertMessage', 'Checked out successfully');
+                            sessionStorage.setItem('alertColor', 'success');
+                            window.location.href = './orders.php';
+                        } else {
+                            alertB("Error: " + data.message, "danger");
+                        }
+
+
 
                     } else {
                         hideSpinner();
-                        alert("Error: " + data.message, "danger");
+                        alertB("Error: " + data.message, "danger");
                     }
                 })
                 .catch(error => {
                     hideSpinner();
                     console.error('Fetch error:', error);
-                    alert("Errore nella risposta del server: " + error.message);
+                    alertB("Errore nella risposta del server: " + error.message);
                 });
         }
     </script>

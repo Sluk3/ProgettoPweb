@@ -13,6 +13,7 @@ if (!isset($_SESSION['username'])) {
     if (!isset($_SESSION['cart'])) {
         loadCart($conn, 'load');
     }
+    cleanupUnusedFiles($conn);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['filtered'])) {
@@ -60,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../CSS/extra.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="../JS/alertB.js"></script>
     <script>
         $(function() {
             $("#price-range").slider({
@@ -91,26 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
     <script>
         let activeAudio = null;
-
-        function alertB(message, color = 'warning') {
-            const alertPlaceholder = document.createElement('div');
-            alertPlaceholder.className = `alert alert-${color} alert-dismissible fade show`;
-            alertPlaceholder.role = 'alert';
-            alertPlaceholder.style.position = 'absolute';
-            alertPlaceholder.style.top = '70px'; // Adjust this value as needed
-            alertPlaceholder.style.left = '50%';
-            alertPlaceholder.style.transform = 'translateX(-50%)';
-            alertPlaceholder.innerHTML = `
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                `;
-            document.body.appendChild(alertPlaceholder);
-
-            setTimeout(() => {
-                const alert = bootstrap.Alert.getOrCreateInstance(alertPlaceholder);
-                alert.close();
-            }, 5000);
-        }
     </script>
 </head>
 
@@ -124,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <nav id="navbar" class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
         <div class="container-fluid justify-content-center">
-            <a class="navbar-brand" href="./index.php#home">
+            <a class="navbar-brand" href="../index.php#home">
                 <img src="../IMG/LOGO_NEW-crop.png" alt="" height="20">
             </a>
             <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,13 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="collapse navbar-collapse col-lg-10" id="navbarSupportedContent">
                 <ul class="nav nav-pills text-center me-auto flex-column flex-lg-row">
                     <li class="nav-item mt-2 mt-md-0">
-                        <a class="nav-link text-primary" aria-current="page" href="./index.php#home">Home</a>
+                        <a class="nav-link text-primary" aria-current="page" href="../index.php#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#aboutus">About Us</a>
+                        <a class="nav-link text-primary" href="../index.php#aboutus">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#portfolio">Portfolio</a>
+                        <a class="nav-link text-primary" href="../index.php#portfolio">Portfolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active text-primary" href="">Products</a>
@@ -500,30 +482,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (data.success) {
                         hideSpinner();
                         if (action === 'add') {
-                            alert("Product added to cart", "success");
+                            sessionStorage.setItem('alertMessage', 'Product added to cart');
+                            sessionStorage.setItem('alertColor', 'success');
                             location.reload();
                         } else if (action === 'delete' || action === 'decrease') {
-                            alert("Product removed from cart", "success");
+                            sessionStorage.setItem('alertMessage', 'Product removed from cart');
+                            sessionStorage.setItem('alertColor', 'success');
                             location.reload();
 
                         } else if (action === 'checkout') {
-                            alert("Cart emptied", "success");
+                            sessionStorage.setItem('alertMessage', 'Checked out successfully');
+                            sessionStorage.setItem('alertColor', 'success');
                             window.location.href = './orders.php';
                         } else {
-                            alert("Error: " + data.message, "danger");
+                            alertB("Error: " + data.message, "danger");
                         }
 
 
 
                     } else {
                         hideSpinner();
-                        alert("Error: " + data.message, "danger");
+                        alertB("Error: " + data.message, "danger");
                     }
                 })
                 .catch(error => {
                     hideSpinner();
                     console.error('Fetch error:', error);
-                    alert("Errore nella risposta del server: " + error.message);
+                    alertB("Errore nella risposta del server: " + error.message);
                 });
         }
         $(document).ready(function() {

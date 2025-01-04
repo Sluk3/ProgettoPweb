@@ -3,8 +3,9 @@ include '../BACKEND/utility.php';
 session_start();
 
 // Controlla se esiste un URL di reindirizzamento
-$redirect_to = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : './index.php';
-
+error_log(print_r($_SESSION, true));
+$redirect_to = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : '../index.php';
+error_log($redirect_to)
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,33 +20,13 @@ $redirect_to = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : './i
     <link rel="stylesheet" href="../CSS/style.css">
 
     <link rel="stylesheet" href="../CSS/extra.css">
-    <script>
-        function alertB(message, color = 'warning') {
-            const alertPlaceholder = document.createElement('div');
-            alertPlaceholder.className = `alert alert-${color} alert-dismissible fade show`;
-            alertPlaceholder.role = 'alert';
-            alertPlaceholder.style.position = 'absolute';
-            alertPlaceholder.style.top = '70px'; // Adjust this value as needed
-            alertPlaceholder.style.left = '50%';
-            alertPlaceholder.style.transform = 'translateX(-50%)';
-            alertPlaceholder.innerHTML = `
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                `;
-            document.body.appendChild(alertPlaceholder);
-
-            setTimeout(() => {
-                const alert = bootstrap.Alert.getOrCreateInstance(alertPlaceholder);
-                alert.close();
-            }, 5000);
-        }
-    </script>
+    <script src="../JS/alertB.js"></script>
 </head>
 
 <body class="bg-dark text-light mt-5 pt-5">
     <nav id="navbar" class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
         <div class="container-fluid justify-content-center">
-            <a class="navbar-brand" href="./index.php#home">
+            <a class="navbar-brand" href="../index.php#home">
                 <img src="../IMG/LOGO_NEW-crop.png" alt="" height="20">
             </a>
             <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,19 +35,19 @@ $redirect_to = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : './i
             <div class="collapse navbar-collapse col-lg-10" id="navbarSupportedContent">
                 <ul class="nav nav-pills text-center me-auto flex-column flex-lg-row">
                     <li class="nav-item mt-2 mt-md-0">
-                        <a class="nav-link text-primary" aria-current="page" href="./index.php#home">Home</a>
+                        <a class="nav-link text-primary" aria-current="page" href="../index.php#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#aboutus">About Us</a>
+                        <a class="nav-link text-primary" href="../index.php#aboutus">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#portfolio">Portfolio</a>
+                        <a class="nav-link text-primary" href="../index.php#portfolio">Portfolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link  text-primary" href="./products.php">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary" href="./index.php#social">Contacts</a>
+                        <a class="nav-link text-primary" href="../index.php#social">Contacts</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -152,7 +133,10 @@ $redirect_to = isset($_SESSION['redirect_to']) ? $_SESSION['redirect_to'] : './i
                             $_SESSION['pwd'] = $password;
                         }
                         if (isset($redirect_to)) {
-                            echo '<script>window.location.href = "' . $redirect_to . '";</script>';
+                            echo "<script>
+                            sessionStorage.setItem('alertMessage', 'Logged in successfully');
+                            sessionStorage.setItem('alertColor', 'success');
+                            window.location.href = \"$redirect_to\";</script>";
                             exit(); // Assicurati di uscire dallo script PHP dopo il reindirizzamento
                         }
 

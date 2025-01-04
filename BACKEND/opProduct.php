@@ -34,7 +34,7 @@ $data['active'] = 1;
 // Recupera il file da $_FILES, se presente
 if (isset($_FILES['audiopath'])) {
     $fileTmpPath = $_FILES['audiopath']['tmp_name'];
-    $fileName = $_FILES['audiopath']['name'];
+    $fileName = str_replace(' ', '_', $_FILES['audiopath']['name']);
     $uploadFileDir = '../AUDIO/';
     $dest_path = $uploadFileDir . $fileName;
 
@@ -46,7 +46,7 @@ if (isset($_FILES['audiopath'])) {
 }
 if (isset($_FILES['productpath'])) {
     $fileTmpPath = $_FILES['productpath']['tmp_name'];
-    $fileName = $_FILES['productpath']['name'];
+    $fileName = str_replace(' ', '_', $_FILES['productpath']['name']);
     $uploadFileDir = '../PRODUCTS/';
     $dest_path = $uploadFileDir . $fileName;
 
@@ -139,6 +139,7 @@ try {
 
                     if ($stmt2->execute()) {
                         $conn->commit();
+                        cleanupUnusedFiles($conn);
                         echo json_encode(['success' => true]);
                     } else {
                         error_log("Execution failed: " . $stmt2->error);
@@ -150,6 +151,7 @@ try {
                     }
                 } else {
                     $conn->commit();
+                    cleanupUnusedFiles($conn);
                     echo json_encode(['success' => true]);
                 }
             } else {
@@ -238,6 +240,7 @@ try {
 
             if ($stmt->execute()) {
                 $conn->commit();
+                cleanupUnusedFiles($conn);
                 echo json_encode(['success' => true]);
                 exit;
             } else {

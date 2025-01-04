@@ -221,7 +221,7 @@ function spawnProd1($row, $type, $conn)
             break;
         case $type == 6:
             echo ' 
-                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Tracks: ' . $row['num_tracks'] . '</p>
+                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Genre: ' . $row['genre'] . '</p>
             ';
             break;
         default:
@@ -857,7 +857,7 @@ function spawnProd3($row, $type, $conn)
             break;
         case $type == 6:
             echo ' 
-                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Tracks: ' . $row['num_tracks'] . '</p>
+                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Genre: ' . $row['genre'] . '</p>
             ';
             break;
         default:
@@ -1184,7 +1184,7 @@ function spawnProd4($row, $cur_price, $quantity)
             break;
         case $row['type_id'] == 6:
             echo ' <p class="card-text fw-light fs-6">Product type: Ghost production</p>
-                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Tracks: ' . $row['num_tracks'] . '</p>
+                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Genre: ' . $row['genre'] . '</p>
             ';
             break;
         default:

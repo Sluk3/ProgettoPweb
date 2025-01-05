@@ -1361,13 +1361,7 @@ function cartItem($row)
                     </div>
                 </div>';
 }
-// Funzione helper per il debug
-function debug($var)
-{
-    echo '<pre style="background-color: #f5f5f5; padding: 15px; margin: 10px; border: 1px solid #ddd;">';
-    var_dump($var);
-    echo '</pre>';
-}
+
 // Funzione per ottenere i file referenziati nel database
 function getReferencedFiles($conn, $table, $column)
 {

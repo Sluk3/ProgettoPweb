@@ -30,7 +30,7 @@ $data['price'] = $_POST['price'];
 $data['listnprice'] = $_POST['listnprice'] ?? null;
 $data['dateprice'] = $_POST['dateprice'] ?? null;
 $data['action'] = $_POST['action'];
-$data['active'] = 1;
+$data['active'] = 0;
 // Recupera il file da $_FILES, se presente
 if (isset($_FILES['audiopath'])) {
     $fileTmpPath = $_FILES['audiopath']['tmp_name'];

@@ -1398,9 +1398,9 @@ function deleteUnusedFiles($directory, $referencedFiles)
                 if (is_file($filePath)) {
                     error_log('Deleting: ' . $filePath);
                     if (unlink($filePath)) {
-                        echo "<script>console.log('Deleted: $filePath<br>');</script>";
+                        error_log('Deleted: $filePath');
                     } else {
-                        echo "<script>console.log('Error deleting: $filePath<br>');</script>";
+                        error_log('Error deleting: $filePath');
                     }
                 }
             }

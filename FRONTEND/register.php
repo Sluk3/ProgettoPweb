@@ -74,8 +74,8 @@
                 </div>
             </div>
             <div class="mb-3 p-2 ">
-                <label for="inputPassword4" class="form-label">Password</label>
-                <input type="password" minlength="8" class="form-control" name="password" id="inputPassword4" placeholder="********" required>
+                <label for="password" class="form-label">Password</label>
+                <input type="password" minlength="8" class="form-control" name="password" id="password" placeholder="********" required>
                 <div id="passwordHelpBlock" class="form-text text-light">
                     Your password must be 8-20 characters long, contain letters, numbers and special characters, and must not contain spaces or emoji.
                 </div>
@@ -101,14 +101,27 @@
                     $password = trim($_POST['password']);
                     // Creare una connessione al database (modifica con i tuoi dati)
                     $conn = dbConnect();
-                    if (!str_contains($mail, '@') || !str_contains($mail, '.')) {
-                        echo "Insert a valid email";
-                    } elseif (searchInDB($conn, "SELECT mail FROM user WHERE mail= ?", $mail)) {
-                        echo "Email already in use";
+                    if (searchInDB($conn, "SELECT mail FROM user WHERE mail= ?", $mail)) {
+                        echo '<script>
+                        document.getElementById("mail").classList.add("is-invalid");
+                        sessionStorage.setItem(\'alertMessage\', \'Email already in use!\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
+                        </script>';
+                        exit();
                     } elseif (searchInDB($conn, "SELECT username FROM user WHERE username= ? ", $username)) {
-                        echo "Username already in use";
+                        echo '<script>
+                        document.getElementById("username").classList.add("is-invalid");
+                        sessionStorage.setItem(\'alertMessage\', \'Username already in use!\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
+                        </script>';
+                        exit();
                     } elseif (!validatePassword($password)) {
-                        echo "Password should be at least 8 characters, accepts letters, numbers and ! @ _ symbols";
+                        echo '<script>
+                        document.getElementById("password").classList.add("is-invalid");
+                        sessionStorage.setItem(\'alertMessage\', \'Password should be at least 8 characters, must contain letters, numbers and ! @ _ symbols\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
+                        </script>';
+                        exit();
                     } else {
 
                         // Preparare l'istruzione SQL per inserire i dati
@@ -116,7 +129,13 @@
 
                         // Eseguire l'istruzione
                         if ($conn->query($sql) === TRUE) {
-                            echo 'Registration succesful!';
+
+                            login($conn, $username, $password);
+
+                            echo '<script>sessionStorage.setItem(\'alertMessage\', \'Registration successfull!\');
+                        sessionStorage.setItem(\'alertColor\', \'success\');
+                        window.location.href = "../index.php";
+                        </script>';
                         } else {
                             echo "Error: " . $sql . "<br>" . $conn->error;
                         }

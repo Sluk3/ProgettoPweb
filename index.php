@@ -69,10 +69,10 @@ session_start();
                                 Dashboards
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item ms-2 mb-2"> <a class="nav-link text-primary" href="./BACKEND/productdashboard.php"> Product Dashboard
+                                <li class="nav-item ms-2 mb-2"> <a class="nav-link text-primary" href="./FRONTEND/productdashboard.php"> Product Dashboard
                                 </a>
                             </li>
-                                <li class="nav-item ms-2"> <a class="nav-link text-primary" href="./BACKEND/admindashboard.php"> Admin Dashboard
+                                <li class="nav-item ms-2"> <a class="nav-link text-primary" href="./FRONTEND/admindashboard.php"> Admin Dashboard
                                 </a>
                             </li>
                             </ul>

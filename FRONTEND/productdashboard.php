@@ -487,6 +487,12 @@ if (!isset($_SESSION['admin'])) {
 
                 }
             }
+            if (action === 'delete') {
+                if (!confirm("Are you sure you want to delete this product?")) {
+                    hideSpinner();
+                    return;
+                }
+            }
 
             // Invia la richiesta con fetch
             fetch('../BACKEND/opProduct.php', {
@@ -503,7 +509,7 @@ if (!isset($_SESSION['admin'])) {
                         location.reload();
                     } else {
                         hideSpinner();
-                        alertB("Errore: " + data.message, "danger");
+                        alert("Errore: " + data.message, "danger");
                     }
                 })
                 .catch(error => {

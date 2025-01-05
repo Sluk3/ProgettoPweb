@@ -70,7 +70,6 @@ $action = $data['action'];
 unset($data['action']);
 
 
-
 if (!$conn) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit;
@@ -117,7 +116,7 @@ try {
                 }
             }
             $query = rtrim($query, ', ') . " WHERE id = '" . $prodId . "' ;";
-
+            error_log($query);
             // Prepara e esegue la query
             $stmt = $conn->prepare($query);
 
@@ -290,7 +289,7 @@ try {
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => 'Execution failed: ' .  $e->getMessage()]);
 }
-function prodCheckValidity($data, $conn)
+function prodCheckValidity(&$data, $conn)
 {
     $checkStmt = $conn->prepare('SELECT COUNT(*) FROM list_prices WHERE prod_id = ? AND date = ?');
     $checkStmt->bind_param('ss', $data['id'], $data['dataprice']);
@@ -324,21 +323,28 @@ LIMIT 1');
     switch (true) {
         case $data['type_id'] == 1:
             unset($data['num_sample']);
-            unset($data['num_track']);
+            unset($data['num_tracks']);
             break;
         case $data['type_id'] == 2 || $data['type_id'] == 3:
             unset($data['bpm']);
             unset($data['tonality']);
+            unset($data['num_tracks']);
             break;
         case $data['type_id'] == 4:
             unset($data['num_sample']);
-            unset($data['num_track']);
+            unset($data['num_tracks']);
             unset($data['bpm']);
             unset($data['tonality']);
-        case $data['type_id'] == 5 || $data['type_id'] == 6:
+        case $data['type_id'] == 5:
             unset($data['bpm']);
             unset($data['tonality']);
             unset($data['num_sample']);
+            break;
+        case $data['type_id'] == 6:
+            unset($data['bpm']);
+            unset($data['tonality']);
+            unset($data['num_sample']);
+            unset($data['num_tracks']);
             break;
         default:
             break;

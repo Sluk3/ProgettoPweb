@@ -14,6 +14,23 @@
 6. [Schema ER e Vincoli della Base di Dati](#schema-er)
 7. [Tecnologie Utilizzate](#tecnologie-utilizzate)
 
+## Changelog
+
+- Aggiunto productpath per immagazzinare nel db il filepath dei prodotti effettivi
+- Aggiunta cartella /PRODUCTS/
+- Differenziazione preview-prodotto anche lato frontend
+- Aggiunta script js per la gestione alert personalizzati
+- Aggiunta extra.css per rendere più bello il sito
+- Aggiunta di AOS per animazioni
+- Sviluppo completato del carrello
+- Sviluppo completato della gestione e visualizzazione ordini
+- Modificata la struttura file come da consegna
+- Gestione upload productdashboard migliorata
+- Attivata l'opzione nullable su order_detail.cur_price
+- Migliorato login e registrazione frontend
+- Pagina index migliorata esteticamente e di contenuto
+- Aggiunto flag active al prodotto per permettere la visualizzazione o non all'utente
+
 ## Introduzione
 Il progetto consiste nella realizzazione di una piattaforma web per un produttore musicale professionista. La piattaforma serve come vetrina professionale per il portfolio dell'artista e come e-commerce per la vendita di prodotti digitali come beat, sample pack, drum kit, plugin, servizi di mix & master e ghost production. Questa documentazione tecnica descrive in dettaglio l'architettura, le funzionalità, le tecnologie utilizzate e le modalità di utilizzo dell'applicativo.
 
@@ -153,78 +170,88 @@ Inoltre, è presente una sezione FAQ per rispondere alle domande più comuni deg
    - Sezione dedicata ai contenuti gratuiti
    - Sistema di download per utenti registrati
      
+3. Area "I tuoi ordini"
+   - Sezione dedicata alla visualizzazione dei propri ordini
+   - Si possono scaricare i prodotti acquistati
+     
 ### Funzionalità Future
 
-1. Area Download Gratuiti
-2. Differenziazione prodotto effettivo e preview audio, sia in frontend dashboard, sia in db.
+1. Profilo utente
+2. Artwork personalizzate per ogni prodotto
+3. Pagamento funzionante
+4. Conferma utente automatizzata tramite mail
+5. Newsletter funzionante
 
 
 ## Configurazione del Database
-**Per far funzionare l’account è necessario creare un utente con tutti i privilegi sul database che ha lo stesso nome utente e password forniti, altrimenti la connessione al db per modificare le dashboard sarà negata.
+
+**Per far funzionare l’account è necessario creare un utente con tutti i privilegi sul database che ha lo stesso nome utente e password forniti, altrimenti la connessione al db per modificare le date non funzionerà.**
 
 Il file SQL si trova nella cartella DBimport.
 
-Se il DB NON ha il nome “prweb1”, modificarlo nella funzione `dbConnect` in `BACKEND/utility.php` alla linea 88.**
+Se il DB NON ha il nome “prweb1”, modificarlo nella funzione `dbConnect` in `BACKEND/utility.php` alla linea 88.
 
 ### Credenziali Admin per il Professor Mesiti
-È stato previsto un account admin per il Professor Mesiti in modo da fargli testare le funzionalità admin in prima persona.
-Credenziali:
+
+È stato previsto un account admin per il Professor Mesiti in modo da fargli testare le funzionalità admin in prima persona. Credenziali:
 - **User**: MMesiti
 - **Password**: PwebMesiti1!
 
-## Schema ER
+### Schema ER e Vincoli della Base di Dati
 
-### Entità e Attributi
+#### Entità e Attributi
 
-1. User
-   - username (PK): varchar(20)
-   - mail: varchar(255)
-   - pwd: varchar(255)
-   - admin: tinyint(1)
-   - authorized: tinyint(1)
-   - blocked: tinyint(1)
+1. **User**
+   - `username` (PK): varchar(20)
+   - `mail`: varchar(255)
+   - `pwd`: varchar(255)
+   - `admin`: tinyint(1)
+   - `authorized`: tinyint(1)
+   - `blocked`: tinyint(1)
 
-2. Product
-   - id (PK): varchar(10)
-   - title: varchar(50)
-   - type_id (FK): int
-   - descr: text
-   - bpm: int (nullable)
-   - tonality: varchar(3) (nullable)
-   - genre: varchar(20) (nullable)
-   - num_sample: int (nullable)
-   - num_tracks: int (nullable)
-   - audiopath: varchar(255) (nullable)
+2. **Product**
+   - `id` (PK): varchar(10)
+   - `title`: varchar(50)
+   - `type_id` (FK): int
+   - `descr`: text
+   - `bpm`: int (nullable)
+   - `tonality`: varchar(3) (nullable)
+   - `genre`: varchar(20) (nullable)
+   - `num_sample`: int (nullable)
+   - `num_tracks`: int (nullable)
+   - `audiopath`: varchar(255) (nullable)
+   - `productpath`: varchar(255)
+   - `active`: tinyint(1)
 
-3. Type
-   - id (PK): int
-   - name: varchar(20)
-   - descr: text
+3. **Type**
+   - `id` (PK): int
+   - `name`: varchar(20)
+   - `descr`: text
 
-4. List_Head
-   - id (PK): int
-   - descr: text
+4. **List_Head**
+   - `id` (PK): int
+   - `descr`: text
 
-5. List_Prices
-   - id (PK): int
-   - price: float
-   - date: datetime
-   - prod_id (FK): varchar(10)
-   - list_id (FK): int
+5. **List_Prices**
+   - `id` (PK): int
+   - `price`: float
+   - `date`: datetime
+   - `prod_id`: varchar(10)
+   - `list_id`: int
 
-6. Order_Head
-   - id (PK): int
-   - username (FK): varchar(20)
-   - date: datetime
-   - confirmed: tinyint(1)
+6. **Order_Head**
+   - `id` (PK): int
+   - `username` (FK): varchar(20)
+   - `date`: datetime
+   - `confirmed`: tinyint(1)
 
-7. Order_Detail
-   - order_id (PK, FK): int
-   - prod_id (PK, FK): varchar(10)
-   - cur_price: float
-   - quantity: int
+7. **Order_Detail**
+   - `order_id` (PK, FK): int
+   - `prod_id` (PK, FK): varchar(10)
+   - `cur_price`: float
+   - `quantity`: int
 
-### Relazioni
+#### Relazioni
 
 1. Product - Type (N:1)
    - Ogni prodotto appartiene a un tipo
@@ -250,71 +277,73 @@ Credenziali:
    - Un prodotto può essere presente in più ordini
    - Ogni dettaglio ordine si riferisce a un solo prodotto
 
-## Vincoli della Base di Dati
+#### Vincoli della Base di Dati
 
-### Vincoli di Integrità Referenziale
-1. Product.type_id → Type.id
+##### Vincoli di Integrità Referenziale
+1. `Product.type_id` → `Type.id`
    - ON DELETE CASCADE
    - ON UPDATE CASCADE
 
-2. List_Prices.prod_id → Product.id
+2. `List_Prices.prod_id` → `Product.id`
    - ON DELETE CASCADE
    - ON UPDATE CASCADE
 
-3. List_Prices.list_id → List_Head.id
+3. `List_Prices.list_id` → `List_Head.id`
    - ON DELETE CASCADE
    - ON UPDATE CASCADE
 
-4. Order_Detail.order_id → Order_Head.id
+4. `Order_Detail.order_id` → `Order_Head.id`
    - ON DELETE CASCADE
    - ON UPDATE CASCADE
 
-5. Order_Detail.prod_id → Product.id
+5. `Order_Detail.prod_id` → `Product.id`
    - Senza clausole CASCADE
 
-6. Order_Head.username → User.username
+6. `Order_Head.username` → `User.username`
    - Senza clausole CASCADE
 
-### Vincoli di Dominio
-1. User
-   - admin, authorized, blocked sono booleani (tinyint(1))
-   - email deve essere un indirizzo valido
-   - username deve essere unico
-   - La password prima del cripting deve essere lunga tra 8 e 40 caratteri, deve contenere almeno una lettera maiuscola, deve contenere almeno una lettera minuscola, deve contenere almeno un numero, deve contenere almeno uno tra i caratteri speciali consentiti (!"#$%&()*+?@^_~).
+##### Vincoli di Dominio
+1. **User**
+   - `admin`, `authorized`, `blocked` sono booleani (tinyint(1))
+   - `email` deve essere un indirizzo valido
+   - `username` deve essere unico
+   - La password prima del cripting deve essere lunga tra 8 e 40 caratteri, deve contenere almeno una lettera maiuscola, deve contenere almeno una lettera minuscola, deve contenere almeno un numero, deve contenere almeno un carattere speciale
 
-2. Product
-   - bpm deve essere un numero tra 60 e 250
-   - num_sample e num_tracks devono essere positivi quando specificati
+2. **Product**
+   - `bpm` deve essere un numero tra 60 e 250
+   - `num_sample` e `num_tracks` devono essere positivi quando specificati
 
-3. List_Prices
-   - price deve essere un numero positivo o zero
-   - date non può essere nel futuro
+3. **List_Prices**
+   - `price` deve essere un numero positivo o zero
+   - `date` non può essere nel futuro
 
-4. Order_Head
-   - confirmed è un booleano (tinyint(1))
-   - date viene impostata automaticamente al timestamp corrente
+4. **Order_Head**
+   - `confirmed` è un booleano (tinyint(1))
+   - `date` viene impostata automaticamente al timestamp corrente
 
-5. Order_Detail
-   - quantity deve essere maggiore di zero
-   - cur_price deve essere non negativo
+5. **Order_Detail**
+   - `quantity` deve essere maggiore di zero
+   - `cur_price` deve essere non negativo
 
-### Vincoli di Business
-1. Gestione Utenti
-   - Solo gli utenti autorizzati (authorized=1) possono effettuare acquisti
-   - Gli utenti bloccati (blocked=1) non possono accedere al sistema
-   - Gli amministratori (admin=1) hanno accesso a tutte le funzionalità
+##### Vincoli di Business
+1. **Gestione Utenti**
+   - Solo gli utenti autorizzati (`authorized=1`) possono effettuare acquisti
+   - Gli utenti bloccati (`blocked=1`) non possono accedere al sistema
+   - Gli amministratori (`admin=1`) hanno accesso a tutte le funzionalità
 
-2. Gestione Prodotti
-   - Ogni prodotto deve appartenere a una categoria valida (type)
-   - I campi specifici (bpm, tonality, genre) sono obbligatori per i beat
-   - Il campo num_sample è obbligatorio per sample pack e drum kit
-   - Il campo num_track è obbligatorio per mix&master e ghostproduction
+2. **Gestione Prodotti**
+   - Ogni prodotto deve appartenere a una categoria valida (`type`)
+   - I campi specifici (`bpm`, `tonality`, `genre`) sono obbligatori per i beat
+   - Il campo `num_sample` è obbligatorio per sample pack e drum kit
+   - Il campo `num_track` è obbligatorio per mix&master
+   - Per la ghostproduction è necessario il `genre`
+   - Il campo `active` serve per la visualizzazione del prodotto
 
-3. Gestione Ordini
-   - Un ordine non confermato (confirmed=0) può essere modificato
+3. **Gestione Ordini**
+   - Un ordine non confermato (`confirmed=0`) può essere modificato
    - Un ordine confermato non può essere modificato
-   - Il prezzo corrente (cur_price) viene fissato al momento dell'inserimento nel carrello
-     
+   - Il prezzo corrente (`cur_price`) viene fissato al momento del checkout
+       
 ## Tecnologie Utilizzate
 - PHP 8.x
 - MySQL 8.x

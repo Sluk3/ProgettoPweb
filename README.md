@@ -72,21 +72,22 @@ I prezzi sono chiaramente indicati per ogni prodotto, e gli utenti possono aggiu
 #### Carrello e Pagamenti:
 
 Il sistema di carrello permette agli utenti di gestire i prodotti selezionati per l'acquisto. Possono aggiungere, rimuovere e modificare la quantità dei prodotti nel carrello.
-Una volta pronti per l'acquisto, gli utenti possono procedere al checkout, dove verranno richiesti i dettagli di pagamento. I metodi di pagamento sono sicuri e protetti, garantendo una transazione senza problemi.
+Una volta pronti per l'acquisto, gli utenti possono procedere al checkout, dove verranno reindirizzati alla pagina dei propri ordini.
+
+#### Ordini:
+
+Gli utenti autenticati possono visualizzare e gestire i propri ordini nella sezione "Your orders". Ogni ordine include i dettagli dei prodotti acquistati, come il titolo, il prezzo corrente e la quantità. Gli ordini confermati mostrano un badge di conferma e il totale dell'ordine. Gli utenti possono anche accedere alle opzioni di download per i prodotti acquistati.
 
 #### Area Amministrativa (Produttore):
 
 L'area amministrativa è accessibile solo agli utenti con privilegi di amministratore. Da qui, il produttore può gestire tutti gli aspetti della piattaforma:
 Gestione Utenti: Visualizzazione e gestione degli utenti registrati, inclusa l'autorizzazione e il blocco degli account.
 Gestione Prodotti: Aggiunta, aggiornamento e rimozione di prodotti digitali dal catalogo.
-Statistiche Vendite: Monitoraggio delle vendite dei prodotti e analisi delle performance.
-Gestione Ordini: Visualizzazione e gestione degli ordini effettuati dagli utenti.
 Upload Contenuti: Caricamento di nuovi file audio e contenuti digitali per i prodotti.
 
 #### Footer e Contatti:
 
 Il footer della piattaforma include collegamenti ai social media del produttore, informazioni legali e sulla privacy, e un modulo di contatto per richieste di supporto o informazioni.
-Inoltre, è presente una sezione FAQ per rispondere alle domande più comuni degli utenti.
 
 ## Prodotti Offerti
 

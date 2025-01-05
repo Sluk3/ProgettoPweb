@@ -105,7 +105,7 @@ switch ($data['action']) {
 
         break;
     case 'checkout':
-        $query = "UPDATE order_head SET confirmed = 1 WHERE id = ?";
+        $query = "UPDATE order_head SET confirmed = 1, date = NOW() WHERE id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $_SESSION['orid']);
         if ($stmt->execute()) {
@@ -113,7 +113,7 @@ switch ($data['action']) {
             foreach ($_SESSION['cart'] as $item) {
                 $query = "UPDATE order_detail od SET od.cur_price = (
                 SELECT pp.price FROM list_prices pp WHERE pp.prod_id = od.prod_id AND pp.date = (
-                    SELECT MAX(sub_pp.date) FROM list_prices sub_pp WHERE sub_pp.prod_id = od.prod_id AND sub_pp.date <= CURDATE()))
+                    SELECT MAX(sub_pp.date) FROM list_prices sub_pp WHERE sub_pp.prod_id = od.prod_id AND sub_pp.date <= NOW()))
             WHERE od.prod_id = ?; 
 ";
                 $stmt = $conn->prepare($query);

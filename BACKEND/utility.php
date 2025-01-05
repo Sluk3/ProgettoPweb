@@ -40,11 +40,7 @@ function validatePassword($password)
     $lower = '/[a-z]/';
     $num = '/[0-9]/';
     $spec = '/[!"#$%&()*+?@^_~]/';
-    echo preg_match($len, $password);
-    echo preg_match($upper, $password);
-    echo preg_match($lower, $password);
-    echo preg_match($num, $password);
-    echo preg_match($spec, $password);
+
     // Verifica se la password soddisfa i criteri
     if (preg_match($len, $password) && preg_match($upper, $password) && preg_match($lower, $password) && preg_match($num, $password) && preg_match($spec, $password)) {
         return true;  // Password valida

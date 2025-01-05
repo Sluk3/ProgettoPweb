@@ -162,6 +162,8 @@ if (!isset($_SESSION['username'])) {
                             echo '<div class="card mb-4 bg-secondary text-light">';
                             echo '<div class="card-header">';
                             echo '<h5 class="card-title">Order ID: ' . $row1['id'] . '</h5>';
+                            $formattedDate = date('d/m/Y H:i:s', strtotime($row1['date']));
+                            echo '<p class="card-text">Date: ' . $formattedDate . '</p>';
                             echo $row1['confirmed'] ? '<span class="badge bg-success">Confirmed</span>' : '<span class="badge bg-warning">Pending</span>';
                             echo '</div>';
                             echo '<div class="card-body">';

@@ -134,7 +134,8 @@ try {
                         echo json_encode(['success' => false, 'message' => 'Prepare failed: ' . $conn->error]);
                         exit;
                     }
-                    $stmt2->bind_param("sdsi", $newpid, $data['price'], $data['dateprice'], $data['listnprice']);
+                    $prodId = isset($newpid) ? $newpid : $prodId;
+                    $stmt2->bind_param("sdsi", $prodId, $data['price'], $data['dateprice'], $data['listnprice']);
 
 
                     if ($stmt2->execute()) {

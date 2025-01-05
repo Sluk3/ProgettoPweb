@@ -104,26 +104,31 @@ error_log($redirect_to)
                         echo '<script>
                         document.getElementById("user").classList.add("is-invalid");
                         document.getElementById("password").classList.add("is-invalid");
-                        alertB("User not existent");
+                        sessionStorage.setItem(\'alertMessage\', \'Username not found, provide a valid username\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
                         </script>';
                         break;
 
                     case 'pwd':
                         echo '<script>
                         document.getElementById("password").classList.add("is-invalid");
-                        alertB("Invalid password");
+                        sessionStorage.setItem(\'alertMessage\', \'Invalid password\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
                         </script>';
                         break;
                     case 'unauth':
                         echo '<script>
                         document.getElementById("user").classList.add("is-invalid");
-                        alertB("User not authorized by the admin");
+                        sessionStorage.setItem(\'alertMessage\', \'User not authorized by the admin yet\');
+                        sessionStorage.setItem(\'alertColor\', \'info\');
                         </script>';
                         break;
                     case 'blk':
                         echo '<script>
                         document.getElementById("user").classList.add("is-invalid");
-                        alertB("User blocked");
+                        sessionStorage.setItem(\'alertMessage\', \'User blocked, you cannot access\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
+                        alertB("");
                         </script>';
                         break;
 
@@ -146,6 +151,8 @@ error_log($redirect_to)
                         echo '<script>
                         document.getElementById("user").classList.add("is-invalid");
                         document.getElementById("password").classList.add("is-invalid");
+                        sessionStorage.setItem(\'alertMessage\', \'Error\');
+                        sessionStorage.setItem(\'alertColor\', \'danger\');
                         </script>';
                         break;
                 }

@@ -322,10 +322,10 @@ session_start();
                 <h1 class="text-center text-light mb-4">Subscribe to Our Newsletter</h1>
                 <form class="row g-3 justify-content-center">
                     <div class="col-md-6">
-                        <input type="email" class="form-control" placeholder="Your email" required>
+                        <input type="email" class="form-control" placeholder="Coming soon!" required disabled>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                        <button type="submit" class="btn btn-primary w-100" disabled>Subscribe</button>
                     </div>
                 </form>
             </div>

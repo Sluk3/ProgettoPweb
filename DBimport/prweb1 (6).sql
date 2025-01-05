@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 03, 2025 alle 22:09
+-- Creato il: Gen 05, 2025 alle 12:28
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -84,9 +84,18 @@ INSERT INTO `list_prices` (`id`, `price`, `date`, `prod_id`, `list_id`) VALUES
 CREATE TABLE `order_detail` (
   `order_id` int(11) NOT NULL,
   `prod_id` varchar(10) NOT NULL,
-  `cur_price` float NOT NULL,
+  `cur_price` float DEFAULT NULL,
   `quantity` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `order_detail`
+--
+
+INSERT INTO `order_detail` (`order_id`, `prod_id`, `cur_price`, `quantity`) VALUES
+(28, 'A8', 49.99, 2),
+(30, 'A7', 75, 1),
+(30, 'A8', 49.99, 1);
 
 -- --------------------------------------------------------
 
@@ -100,6 +109,16 @@ CREATE TABLE `order_head` (
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   `confirmed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `order_head`
+--
+
+INSERT INTO `order_head` (`id`, `username`, `date`, `confirmed`) VALUES
+(28, 'Sluke', '2025-01-04 13:54:57', 1),
+(29, 'Sluke', '2025-01-04 14:28:23', 0),
+(30, 'Sluke', '2025-01-04 15:43:48', 1),
+(31, 'Sluke', '2025-01-04 15:43:58', 0);
 
 -- --------------------------------------------------------
 
@@ -119,7 +138,7 @@ CREATE TABLE `product` (
   `num_tracks` int(11) DEFAULT NULL,
   `audiopath` varchar(255) DEFAULT NULL,
   `productpath` varchar(255) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT 1
+  `active` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -127,15 +146,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `title`, `type_id`, `descr`, `bpm`, `tonality`, `genre`, `num_sample`, `num_tracks`, `audiopath`, `productpath`, `active`) VALUES
-('A2', 'Neve', 1, 'A composition usually sold to singer or rapper to sing onto', 140, 'E', 'Emo Trap', 0, 0, '../AUDIO/Sluke - Neve.mp3', '../PRODUCTS/Sluke - Neve.wav', 1),
-('A7', 'Dark Road', 1, '-', 132, 'Cm', 'Trap', 0, 0, '../AUDIO/Sluke - Dark Road.mp3', '../PRODUCTS/Sluke - Dark Road.wav', 1),
+('A2', 'Neve', 1, 'A composition usually sold to singer or rapper to sing onto', 140, 'E', 'Emo Trap', 0, 0, '../AUDIO/Sluke_-_Neve.mp3', '../PRODUCTS/Sluke_-_Neve.mp3', 1),
+('A7', 'Dark Road', 1, '-', 132, 'Cm', 'Trap', 0, 0, '../AUDIO/Sluke_-_Dark_Road.mp3', '../PRODUCTS/Sluke_-_Dark_Road.mp3', 1),
 ('A8', 'Waves', 1, 'chitarrina ns', 145, 'Gm', 'Trap', 0, 0, '../AUDIO/waves.mp3', '../PRODUCTS/waves.mp3', 1),
-('A9', 'Sun In Our Eyes REMIX', 1, '-', 174, 'G#m', 'DNB', 0, 0, '../AUDIO/Sun In Our Eyes RMX.mp3', '../PRODUCTS/Sun In Our Eyes RMX.mp3', 1),
-('B2', 'Fake Drum Kit', 2, '', 0, 'nul', 'Trap', 1, 0, '../AUDIO/ding-sound-effect_2.mp3', '../PRODUCTS/Fake Drum Kit.txt', 1),
-('C1', 'Fake Sample pack', 3, 'Jamiaca inspired loops', 0, 'nul', 'Raggae', 1, 0, '../AUDIO/Baby Keem & Kendrick Lamar - Family Ties (Distorzion Remix).mp3', '', 1),
-('D1', 'Sloothe', 4, 'Poor mans\' mid-side trackspacer, but for FL Studio patcher', 0, 'nul', 'Effect: Dyn eq', 0, 0, '../AUDIO/IN ALTO MARE RMX.mp3', '../PRODUCTS/SLOOTHE.fst', 1),
-('E1', 'Basic master', 5, 'I\'ll Master your mixed track!', 0, 'nul', 'Any', 0, 1, '../AUDIO/Zen - Overdose (MASTER).mp3', '../PRODUCTS/mixmasterSluke.txt', 1),
-('F1', 'EDM Ghost production', 6, '', NULL, 'C', 'EDM', NULL, NULL, '../AUDIO/mind rmx.mp3', '../PRODUCTS/mixmasterSluke.txt', 1);
+('A9', 'Sun In Our Eyes REMIX', 1, '-', 174, 'G#m', 'DNB', 0, 0, '../AUDIO/Sun_In_Our_Eyes_RMX.mp3', '../PRODUCTS/Sun_In_Our_Eyes_RMX.mp3', 1),
+('B2', 'Fake Drum Kit', 2, '', 0, 'nul', 'Trap', 1, 0, '../AUDIO/among-us-role-reveal-sound.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
+('C1', 'Fake Sample pack', 3, 'Jamiaca inspired loops', 0, 'nul', 'Raggae', 1, 0, '../AUDIO/1F2F.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
+('D1', 'Sloothe', 4, 'Poor mans\' mid-side trackspacer, but for FL Studio patcher', 0, 'nul', 'Effect: Dyn eq', 0, 0, '../AUDIO/IN_ALTO_MARE_RMX.mp3', '../PRODUCTS/SLOOTHE.fst', 1),
+('E1', 'Basic master', 5, 'I\'ll Master your mixed track!', 0, 'nul', 'Any', 0, 1, '../AUDIO/Zen_-_Overdose__MASTER_.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
+('F1', 'EDM Ghost production', 6, '', 0, 'nul', 'EDM', 0, 0, '../AUDIO/mind_rmx.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1);
 
 -- --------------------------------------------------------
 
@@ -185,35 +204,7 @@ INSERT INTO `user` (`username`, `mail`, `pwd`, `admin`, `authorized`, `blocked`)
 ('Master', 'mfs_mgv@yahoo.com', '$2y$10$zMkyDM.mNfzhaBZ1HH81SOjNxTwftVL3jv1MYQ8N3svsdjm0hGgXC', 0, 1, 0),
 ('MMesiti', 'mesiti@mesiti.it', '$2y$10$ZerH2OVmzhcsR8cbXDo4CeurLEeByoos19SrY/iZQEbzVTfw0Mjdy', 1, 1, 0),
 ('Sluke', 'lukeskystabi@gmail.com', '$2y$10$a//3F0DgiSKcdXTHoRgo5OLCA5xc7OeUCNHicYpZmRrT48.jo3z.C', 1, 1, 0),
-('Sonne', 'SONNE@SONNE.IT', '$2y$10$cv0j.O.wlbpjYGZAAnFhDOtsFnPLJxkg/i.TzKLwPi4RnEj3HoKWC', 1, 1, 0),
-('Tiopio1', 'lamiasamu2013@libero.it', '$2y$10$4ef2F12QV/Bmy1iC7Wbn3.3wkQHvlZFu.xKhLNP/F2wdzysxOdSoW', 0, 1, 0),
-('user1', 'user1@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user10', 'user10@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user14', 'user14@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user15', 'user15@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user16', 'user16@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user17', 'user17@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user18', 'user18@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user19', 'user19@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user2', 'user2@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user20', 'user20@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user21', 'user21@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user22', 'user22@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user23', 'user23@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user24', 'user24@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user25', 'user25@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user26', 'user26@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user27', 'user27@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user28', 'user28@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user29', 'user29@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user3', 'user3@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 0, 1),
-('user30', 'user30@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user4', 'user4@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user5', 'user5@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user6', 'user6@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user7', 'user7@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user8', 'user8@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0),
-('user9', 'user9@example.com', '$2y$10$HQ6QrIvLVbvAbo.G/ut4QumvKpl8ApHhR68/JcYfsI3imXt1t7kp6', 0, 1, 0);
+('Sonne', 'SONNE@SONNE.IT', '$2y$10$cv0j.O.wlbpjYGZAAnFhDOtsFnPLJxkg/i.TzKLwPi4RnEj3HoKWC', 1, 1, 0);
 
 --
 -- Indici per le tabelle scaricate
@@ -274,13 +265,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT per la tabella `list_prices`
 --
 ALTER TABLE `list_prices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT per la tabella `order_head`
 --
 ALTER TABLE `order_head`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT per la tabella `type`

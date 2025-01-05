@@ -1,5 +1,5 @@
 <?php
-include './BACKEND/utility.php';
+include './COMMON/utility.php';
 
 // Inizializza la sessione
 session_start();

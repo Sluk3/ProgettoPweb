@@ -17,11 +17,19 @@
 ## Changelog
 
 - Aggiunto productpath per immagazzinare nel db il filepath dei prodotti effettivi
-- aggiunta cartella /PRODUCTS/
+- Aggiunta cartella /PRODUCTS/
 - Differenziazione preview-prodotto anche lato frontend
-- aggiunta script js per la gestione alert personalizzati
-- aggiunta extra.css per rendere più bello il sito
-- aggiunta di AOS per animazioni
+- Aggiunta script js per la gestione alert personalizzati
+- Aggiunta extra.css per rendere più bello il sito
+- Aggiunta di AOS per animazioni
+- Sviluppo completato del carrello
+- Sviluppo completato della gestione e visualizzazione ordini
+- Modificata la struttura file come da consegna
+- Gestione upload productdashboard migliorata
+- Attivata l'opzione nullable su order_detail.cur_price
+- Migliorato login e registrazione frontend
+- Pagina index migliorata esteticamente e di contenuto
+- Aggiunto flag active al prodotto per permettere la visualizzazione o non all'utente
 
 ## Introduzione
 Il progetto consiste nella realizzazione di una piattaforma web per un produttore musicale professionista. La piattaforma serve come vetrina professionale per il portfolio dell'artista e come e-commerce per la vendita di prodotti digitali come beat, sample pack, drum kit, plugin, servizi di mix & master e ghost production. Questa documentazione tecnica descrive in dettaglio l'architettura, le funzionalità, le tecnologie utilizzate e le modalità di utilizzo dell'applicativo.

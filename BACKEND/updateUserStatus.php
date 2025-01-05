@@ -1,5 +1,6 @@
 <?php
-include './utility.php';
+include '../COMMON/utility.php';
+
 session_start();
 // Gestisci l'accesso
 if (!isset($_SESSION['admin'])) {

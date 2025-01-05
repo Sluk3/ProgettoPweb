@@ -1,5 +1,5 @@
 <?php
-include '../BACKEND/utility.php';
+include '../COMMON/utility.php';
 session_start();
 if (!isset($_SESSION['username'])) {
     // Salva l'URL corrente

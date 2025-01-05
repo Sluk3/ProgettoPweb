@@ -1,5 +1,5 @@
 <?php
-include '../BACKEND/utility.php';
+include '../COMMON/utility.php';
 session_start();
 
 // Controlla se esiste un URL di reindirizzamento

@@ -1,6 +1,6 @@
 <?php
 
-include './utility.php';
+include '../COMMON/utility.php';
 session_start();
 if (!isset($_SESSION['username'])) {
 

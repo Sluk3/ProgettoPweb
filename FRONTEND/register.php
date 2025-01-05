@@ -90,8 +90,7 @@
 
 
                 <?php
-                // Includi il file con la funzione
-                include '../BACKEND/utility.php';
+                include '../COMMON/utility.php';
 
                 // Controllare se il form è stato inviato
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {

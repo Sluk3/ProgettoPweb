@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     if (sessionStorage.getItem('alertMessage') && sessionStorage.getItem('alertColor')) {
         alertB(sessionStorage.getItem('alertMessage'), sessionStorage.getItem('alertColor'));
@@ -21,7 +22,7 @@ function alertB(message, color = 'warning') {
     document.body.appendChild(alertPlaceholder);
 
     setTimeout(() => {
-        const alert = bootstrap.Alert.getOrCreateInstance(alertPlaceholder);
-        alert.close();
+        const alertInstance = bootstrap.Alert.getOrCreateInstance(alertPlaceholder);
+        alertInstance.close();
     }, 5000);
 }

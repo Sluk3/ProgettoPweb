@@ -18,7 +18,6 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="./CSS/style.css">
     <link rel="stylesheet" href="./CSS/extra.css">
-    <script src="../JS/alertB.js"></script>
 </head>
 
 <body class="bg-dark text-light mt-4 ">
@@ -430,6 +429,8 @@ session_start();
 
         });
     </script>
+
+    <script src="../JS/alertB.js"></script>
 </body>
 
 </html>

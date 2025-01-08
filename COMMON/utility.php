@@ -1287,11 +1287,12 @@ function displayCart()
 }
 function cartItem($row)
 {
+    $imgSrc = (basename($_SERVER['PHP_SELF']) == 'index.php') ? './IMG/studio.jpg' : '../IMG/studio.jpg';
     echo '
                 <div class="card mb-3" style="max-height: 130px, overflow: hidden;">
                     <div class="row g-0">
                         <div class="col-4 d-flex  align-items-start">
-                            <img src="../IMG/studio.jpg" class="m-2 img-fluid rounded-start " alt="...">
+                            <img src="' . $imgSrc . '" class="m-2 img-fluid rounded-start " alt="...">
                         </div>
                         <div class="col-8">
                             <div class="card-body">

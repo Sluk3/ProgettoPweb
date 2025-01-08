@@ -245,73 +245,11 @@ if (!isset($_SESSION['username'])) {
 
         </div>
     </footer>
-    <script>
-        // Mostra lo spinner al caricamento e lo nasconde alla fine
-        function showSpinner() {
-            document.getElementById('spinner-overlay').style.display = 'flex';
-        }
 
-        function hideSpinner() {
-            document.getElementById('spinner-overlay').style.display = 'none';
-        }
-
-        // Funzione per mostrare un alert
-        function addTocart(id, action) {
-            showSpinner();
-            console.log("Sending data:", {
-
-                id,
-                action
-            }); // Log per debug
-
-            fetch('../BACKEND/cart.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id,
-                        action
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Response:", data); // Log per debug
-                    if (data.success) {
-                        hideSpinner();
-                        if (action === 'add') {
-                            sessionStorage.setItem('alertMessage', 'Product added to cart');
-                            sessionStorage.setItem('alertColor', 'success');
-                            location.reload();
-                        } else if (action === 'delete' || action === 'decrease') {
-                            sessionStorage.setItem('alertMessage', 'Product removed from cart');
-                            sessionStorage.setItem('alertColor', 'success');
-                            location.reload();
-
-                        } else if (action === 'checkout') {
-                            sessionStorage.setItem('alertMessage', 'Checked out successfully');
-                            sessionStorage.setItem('alertColor', 'success');
-                            window.location.href = './orders.php';
-                        } else {
-                            alertB("Error: " + data.message, "danger");
-                        }
-
-
-
-                    } else {
-                        hideSpinner();
-                        alertB("Error: " + data.message, "danger");
-                    }
-                })
-                .catch(error => {
-                    hideSpinner();
-                    console.error('Fetch error:', error);
-                    alertB("Errore nella risposta del server: " + error.message);
-                });
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../JS/alertB.js"></script>
+    <script src="../JS/cart.js"></script>
+    <script src="../JS/spinner.js"></script>
 </body>
 
 </html>

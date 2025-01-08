@@ -61,35 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../CSS/extra.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-    <script>
-        $(function() {
-            $("#price-range").slider({
-                range: true,
-                min: 0,
-                max: 1000,
-                values: [0, 1000],
-                slide: function(event, ui) {
-                    $("#pricelab").val("€" + ui.values[0] + " - €" + ui.values[1]);
-                }
-            });
-            $("#pricelab").val("€" + $("#price-range").slider("values", 0) +
-                " - €" + $("#price-range").slider("values", 1));
-        });
-        $(function() {
-            $("#bpm-range").slider({
-                range: true,
-                min: 60,
-                max: 200,
-                values: [60, 200],
-                slide: function(event, ui) {
-                    $("#bpmlab").val(ui.values[0] + " BPM - " + ui.values[1] + " BPM");
-                }
-            });
-            $("#bpmlab").val($("#bpm-range").slider("values", 0) + " BPM - " +
-                $("#bpm-range").slider("values", 1) + " BPM");
-        });
-        /* var values = $(".selector").slider("option", "values"); */
-    </script>
+    <script src="../JS/initFilters.js"></script>
     <script>
         let activeAudio = null;
     </script>
@@ -423,152 +395,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </div>
 
-
-
-
-    <script>
-        // Mostra lo spinner al caricamento e lo nasconde alla fine
-        function showSpinner() {
-            document.getElementById('spinner-overlay').style.display = 'flex';
-        }
-
-        function hideSpinner() {
-            document.getElementById('spinner-overlay').style.display = 'none';
-        }
-
-        function setFilter(action) {
-            if (action === 'apply') {
-
-                const bpm = $("#bpm-range").slider("option", "values");
-                const price = $("#price-range").slider("option", "values");
-                document.getElementById('filtered').value = 1;
-                document.getElementById('bpm1').value = bpm[0];
-                document.getElementById('bpm2').value = bpm[1];
-                document.getElementById('price1').value = price[0];
-                document.getElementById('price2').value = price[1];
-                const form = document.getElementById('formfilter');
-                form.submit();
-            } else if (action === 'reset') {
-                const form = document.getElementById('formfilter');
-                document.getElementsByName('filtered').value = 0;
-                form.submit();
-                form.reset();
-            }
-
-        }
-
-        function addTocart(id, action) {
-            showSpinner();
-            console.log("Sending data:", {
-
-                id,
-                action
-            }); // Log per debug
-
-            fetch('../BACKEND/cart.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id,
-                        action
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Response:", data); // Log per debug
-                    if (data.success) {
-                        hideSpinner();
-                        if (action === 'add') {
-                            sessionStorage.setItem('alertMessage', 'Product added to cart');
-                            sessionStorage.setItem('alertColor', 'success');
-                            location.reload();
-                        } else if (action === 'delete' || action === 'decrease') {
-                            sessionStorage.setItem('alertMessage', 'Product removed from cart');
-                            sessionStorage.setItem('alertColor', 'success');
-                            location.reload();
-
-                        } else if (action === 'checkout') {
-                            sessionStorage.setItem('alertMessage', 'Checked out successfully');
-                            sessionStorage.setItem('alertColor', 'success');
-                            window.location.href = './orders.php';
-                        } else {
-                            alertB("Error: " + data.message, "danger");
-                        }
-
-
-
-                    } else {
-                        hideSpinner();
-                        alertB("Error: " + data.message, "danger");
-                    }
-                })
-                .catch(error => {
-                    hideSpinner();
-                    console.error('Fetch error:', error);
-                    alertB("Errore nella risposta del server: " + error.message);
-                });
-        }
-        $(document).ready(function() {
-            // Function to handle enabling/disabling of BPM and key filters
-            function handleFilterFields() {
-                const $typeSelect = $('#typeFilter');
-                const $genrefilter = $('#genrefilter');
-                const $bpmRange = $('#bpm-range');
-                const $bpmLabel = $('#bpmlab');
-                const $tonalitySelect = $('select[name="tonalityfilter"]');
-
-                // Get the parent elements to disable the entire sections
-                const $bpmSection = $bpmRange.closest('.mb-3');
-                const $keySection = $tonalitySelect.closest('.mb-3');
-
-                // Function to set disabled state
-                function setDisabledState(isDisabled) {
-                    // Disable/Enable BPM range slider
-                    if ($bpmRange.hasClass('ui-slider')) {
-                        $bpmRange.slider(isDisabled ? 'disable' : 'enable');
-                    }
-                    $bpmLabel.prop('disabled', isDisabled);
-
-                    // Disable/Enable tonality select
-                    $tonalitySelect.prop('disabled', isDisabled);
-
-                    // Add/remove opacity to show disabled state visually
-                    $bpmSection.css('opacity', isDisabled ? '0.5' : '1');
-                    $keySection.css('opacity', isDisabled ? '0.5' : '1');
-
-                    if (isDisabled) {
-                        // Reset values when disabled
-                        if ($bpmRange.hasClass('ui-slider')) {
-                            $bpmRange.slider('values', [60, 200]);
-                            $('#bpmlab').val('60 BPM - 200 BPM');
-                        }
-                        $tonalitySelect.val('*');
-                    }
-                }
-
-                // Initial state and change handler
-                function updateFieldsState() {
-                    const isTypeOne = $typeSelect.val() === '1';
-                    setDisabledState(!isTypeOne);
-                }
-
-                // Add change event listener to type select
-                $typeSelect.on('change', updateFieldsState);
-
-                // Set initial state
-                updateFieldsState();
-            }
-
-            // Initialize filter handling
-            handleFilterFields();
-        });
-    </script>
-
-
-
-
     <footer id="social" class="footer bg-secondary mt-5">
         <div class="container p-3">
             <h3 class="text-primary fw-bold fs-1">Sluke</h3>
@@ -597,6 +423,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="../JS/alertB.js"></script>
+    <script src="../JS/cart.js"></script>
+    <script src="../JS/spinner.js"></script>
+    <script src="../JS/manageFilters.js"></script>
+
 </body>
 
 </html>

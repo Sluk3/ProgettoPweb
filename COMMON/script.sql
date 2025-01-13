@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 05, 2025 alle 12:28
+-- Creato il: Gen 13, 2025 alle 19:20
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `prweb1`
 --
+CREATE DATABASE IF NOT EXISTS `prweb1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `prweb1`;
 
 -- --------------------------------------------------------
 
@@ -48,7 +50,7 @@ INSERT INTO `list_head` (`id`, `descr`) VALUES
 CREATE TABLE `list_prices` (
   `id` int(11) NOT NULL,
   `price` float NOT NULL,
-  `date` datetime NOT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp(),
   `prod_id` varchar(10) NOT NULL,
   `list_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -73,7 +75,8 @@ INSERT INTO `list_prices` (`id`, `price`, `date`, `prod_id`, `list_id`) VALUES
 (46, 0, '2024-11-12 01:55:11', 'C1', 1),
 (56, 0, '2024-11-13 10:59:11', 'A9', 1),
 (57, 500, '2025-01-03 19:14:53', 'F1', 1),
-(58, 20, '2025-01-03 19:28:01', 'B2', 1);
+(58, 20, '2025-01-03 19:28:01', 'B2', 1),
+(63, 70, '2025-01-05 18:23:17', 'A7', 1);
 
 -- --------------------------------------------------------
 
@@ -94,8 +97,17 @@ CREATE TABLE `order_detail` (
 
 INSERT INTO `order_detail` (`order_id`, `prod_id`, `cur_price`, `quantity`) VALUES
 (28, 'A8', 49.99, 2),
-(30, 'A7', 75, 1),
-(30, 'A8', 49.99, 1);
+(30, 'A7', 70, 1),
+(30, 'A8', 49.99, 1),
+(32, 'A7', 70, 1),
+(32, 'A8', 49.99, 1),
+(32, 'B2', 20, 1),
+(32, 'E1', 49.99, 1),
+(33, 'A7', 70, 1),
+(33, 'E1', 49.99, 1),
+(34, 'A2', 60, 2),
+(34, 'E1', 49.99, 1),
+(35, 'A8', 49.99, 1);
 
 -- --------------------------------------------------------
 
@@ -118,7 +130,12 @@ INSERT INTO `order_head` (`id`, `username`, `date`, `confirmed`) VALUES
 (28, 'Sluke', '2025-01-04 13:54:57', 1),
 (29, 'Sluke', '2025-01-04 14:28:23', 0),
 (30, 'Sluke', '2025-01-04 15:43:48', 1),
-(31, 'Sluke', '2025-01-04 15:43:58', 0);
+(31, 'Sluke', '2025-01-04 15:43:58', 0),
+(32, 'Sluke', '2025-01-05 00:00:00', 1),
+(33, 'Sluke', '2025-01-05 19:12:14', 1),
+(34, 'Sluke', '2025-01-08 19:21:35', 1),
+(35, 'Sluke', '2025-01-08 19:21:59', 1),
+(36, 'Sluke', '2025-01-13 18:27:17', 0);
 
 -- --------------------------------------------------------
 
@@ -146,15 +163,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `title`, `type_id`, `descr`, `bpm`, `tonality`, `genre`, `num_sample`, `num_tracks`, `audiopath`, `productpath`, `active`) VALUES
-('A2', 'Neve', 1, 'A composition usually sold to singer or rapper to sing onto', 140, 'E', 'Emo Trap', 0, 0, '../AUDIO/Sluke_-_Neve.mp3', '../PRODUCTS/Sluke_-_Neve.mp3', 1),
-('A7', 'Dark Road', 1, '-', 132, 'Cm', 'Trap', 0, 0, '../AUDIO/Sluke_-_Dark_Road.mp3', '../PRODUCTS/Sluke_-_Dark_Road.mp3', 1),
-('A8', 'Waves', 1, 'chitarrina ns', 145, 'Gm', 'Trap', 0, 0, '../AUDIO/waves.mp3', '../PRODUCTS/waves.mp3', 1),
-('A9', 'Sun In Our Eyes REMIX', 1, '-', 174, 'G#m', 'DNB', 0, 0, '../AUDIO/Sun_In_Our_Eyes_RMX.mp3', '../PRODUCTS/Sun_In_Our_Eyes_RMX.mp3', 1),
-('B2', 'Fake Drum Kit', 2, '', 0, 'nul', 'Trap', 1, 0, '../AUDIO/among-us-role-reveal-sound.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
-('C1', 'Fake Sample pack', 3, 'Jamiaca inspired loops', 0, 'nul', 'Raggae', 1, 0, '../AUDIO/1F2F.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
+('A2', 'Neve', 1, 'A composition usually sold to singer or rapper to sing onto', 150, 'E', 'Hip Hop', 0, 0, '../AUDIO/Sluke_-_Neve.mp3', '../PRODUCTS/Sluke_-_Neve.mp3', 1),
+('A7', 'Dark Road', 1, '-', 130, 'G#', 'Trap', 0, 0, '../AUDIO/Sluke_-_Dark_Road.mp3', '../PRODUCTS/Sluke_-_Dark_Road.mp3', 1),
+('A8', 'Waves', 1, 'chitarrina ns', 150, 'G#', 'Trap', 0, 0, '../AUDIO/waves.mp3', '../PRODUCTS/waves.mp3', 1),
+('A9', 'Sun In Our Eyes REMIX', 1, '-', 173, 'G#m', 'DNB', 0, 0, '../AUDIO/Sun_In_Our_Eyes_RMX.mp3', '../PRODUCTS/Sun_In_Our_Eyes_RMX.mp3', 1),
+('B2', 'Fake Drum Kit', 2, '', 0, 'nul', 'Trap', 6, 0, '../AUDIO/among-us-role-reveal-sound.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
+('C1', 'Fake Sample pack', 3, 'Jamiaca inspired loops', 0, 'nul', 'Reggaeton', 4, 0, '../AUDIO/1F2F.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
 ('D1', 'Sloothe', 4, 'Poor mans\' mid-side trackspacer, but for FL Studio patcher', 0, 'nul', 'Effect: Dyn eq', 0, 0, '../AUDIO/IN_ALTO_MARE_RMX.mp3', '../PRODUCTS/SLOOTHE.fst', 1),
 ('E1', 'Basic master', 5, 'I\'ll Master your mixed track!', 0, 'nul', 'Any', 0, 1, '../AUDIO/Zen_-_Overdose__MASTER_.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1),
-('F1', 'EDM Ghost production', 6, '', 0, 'nul', 'EDM', 0, 0, '../AUDIO/mind_rmx.mp3', '../PRODUCTS/RISATA_ANDRE.mp3', 1);
+('F1', 'EDM Ghost production', 6, '', 0, 'nul', 'EDM', 0, 0, '../AUDIO/mind_rmx.mp3', '../PRODUCTS/error_CDOxCYm.mp3', 1);
 
 -- --------------------------------------------------------
 
@@ -200,8 +217,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `mail`, `pwd`, `admin`, `authorized`, `blocked`) VALUES
+('Anna', 'anna@anna.it', '$2y$10$LAmOWIkDB7iy1qL8mRHDtuPPmoLlyU0SVZKW18I.K4N2LuOaSMek2', 0, 0, 0),
+('Evilsluko', 'bobmsda@fa.ga', '$2y$10$piK46kTTr1wwQnm7Ae3s0OKpPCnkI1rjbJ49KTmZ1xdr/NgRPR0zG', 0, 1, 0),
 ('Marius', 'marius@marius.it', '$2y$10$M2Y7HFRO6z2N/K9Gb7Pqgu0MpMBLIgbiXDnu5cUXioXsGHoCNQWIG', 1, 1, 0),
-('Master', 'mfs_mgv@yahoo.com', '$2y$10$zMkyDM.mNfzhaBZ1HH81SOjNxTwftVL3jv1MYQ8N3svsdjm0hGgXC', 0, 1, 0),
 ('MMesiti', 'mesiti@mesiti.it', '$2y$10$ZerH2OVmzhcsR8cbXDo4CeurLEeByoos19SrY/iZQEbzVTfw0Mjdy', 1, 1, 0),
 ('Sluke', 'lukeskystabi@gmail.com', '$2y$10$a//3F0DgiSKcdXTHoRgo5OLCA5xc7OeUCNHicYpZmRrT48.jo3z.C', 1, 1, 0),
 ('Sonne', 'SONNE@SONNE.IT', '$2y$10$cv0j.O.wlbpjYGZAAnFhDOtsFnPLJxkg/i.TzKLwPi4RnEj3HoKWC', 1, 1, 0);
@@ -265,13 +283,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT per la tabella `list_prices`
 --
 ALTER TABLE `list_prices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT per la tabella `order_head`
 --
 ALTER TABLE `order_head`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT per la tabella `type`

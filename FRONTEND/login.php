@@ -167,33 +167,10 @@ error_log($redirect_to)
 
 
 
-    <footer id="social" class="footer bg-secondary mt-5 positionc-bottom">
-        <div class="container p-3">
-            <h3 class="text-primary fw-bold fs-1">Sluke</h3>
-            <h5 class="my-3">Follow me on my socials to never miss any content!</h5>
-            <p class="my-3 fs-5 "><i class="bi bi-envelope-at-fill text-primary"></i> :musicbysluke@gmail.com</p>
-            <div class="social-links d-flex justify-content-around">
-                <a href="https://www.youtube.com/@sluke1547" target="_blank" rel="noopener noreferrer">
-                    <h1><i class="bi bi-youtube c"></i></h1>
-                </a>
-                <a href="https://open.spotify.com/intl-it/artist/4zTNDtXBjnewJ2qIWvdwEe?si=2f29d7a2c37d4520" target="_blank" rel="noopener noreferrer">
-                    <h1><i class="bi bi-spotify"></i></h1>
-                </a>
-                <a href="https://www.instagram.com/musicbysluke" target="_blank" rel="noopener noreferrer">
-                    <h1><i class="bi bi-instagram"></i></h1>
-                </a>
-                <a href="https://www.tiktok.com/@musicbysluke" target="_blank" rel="noopener noreferrer">
-                    <h1><i class="bi bi-tiktok"></i></h1>
-                </a>
-                <a href="https://soundcloud.com/slukemusicc" target="_blank" rel="noopener noreferrer">
-                    <h1><i class="bi bi-soundwave "></i></h1>
-                </a>
-            </div>
+    <?php include '../COMMON/footer.php'; ?>
 
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
     <script src="../JS/alertB.js"></script>
 </body>
 

@@ -3,6 +3,14 @@ include './COMMON/utility.php';
 
 // Inizializza la sessione
 session_start();
+
+if (isset($_SESSION['cart']) && isset($_SESSION['username'])) {
+    $conn = dbConnect();
+    loadCart($conn, 'refresh');
+} else if (isset($_SESSION['username'])) {
+    $conn = dbConnect();
+    loadCart($conn, 'load');
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,12 +29,7 @@ session_start();
 </head>
 
 <body class="bg-dark text-light mt-4 ">
-    <!-- Spinner Overlay -->
-    <div id="spinner-overlay" class="d-flex d-none justify-content-center align-items-center position-fixed w-100 h-100 bg-dark bg-opacity-75" style="top: 0; left: 0;z-index: 2000;">
-        <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
+    <?php include './COMMON/spinner.php'; ?>
     <nav id="navbar" class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand" href="#home">
@@ -132,6 +135,7 @@ session_start();
         </div>
         <div class="offcanvas-body">
             ';
+
         displayCart();
         echo '
            
@@ -271,14 +275,14 @@ session_start();
 
                 <div class="row mb-2 " data-aos="fade-up">
                     <h3 class="my-4">Songs and productions</h3>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7ysK5BELfwpjusuUT1QYpw?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7ysK5BELfwpjusuUT1QYpw?utm_source=generator" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
                 <div class="row my-4" data-aos="fade-up">
                     <div class="col-lg-6">
-                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1oSxktMK4ESQMlCm4FazEM?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1oSxktMK4ESQMlCm4FazEM?utm_source=generator" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                     </div>
                     <div class="col-lg-6">
-                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7ik8zyFSiEPjdl296iu9yD?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7ik8zyFSiEPjdl296iu9yD?utm_source=generator" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                     </div>
                 </div>
             </div>
@@ -329,31 +333,7 @@ session_start();
                 </form>
             </div>
         </section>
-        <footer id="social" class="footer bg-secondary pb-5">
-            <div class="container p-3">
-                <h3 class="text-primary fw-bold fs-1">Sluke</h3>
-                <h5 class="my-3">Follow me on my socials to never miss any content!</h5>
-                <p class="my-3 fs-5 "><i class="bi bi-envelope-at-fill text-primary"></i> :musicbysluke@gmail.com</p>
-                <div class="social-links d-flex justify-content-around">
-                    <a href="https://www.youtube.com/@sluke1547" target="_blank" rel="noopener noreferrer">
-                        <h1><i class="bi bi-youtube c"></i></h1>
-                    </a>
-                    <a href="https://open.spotify.com/intl-it/artist/4zTNDtXBjnewJ2qIWvdwEe?si=2f29d7a2c37d4520" target="_blank" rel="noopener noreferrer">
-                        <h1><i class="bi bi-spotify"></i></h1>
-                    </a>
-                    <a href="https://www.instagram.com/musicbysluke" target="_blank" rel="noopener noreferrer">
-                        <h1><i class="bi bi-instagram"></i></h1>
-                    </a>
-                    <a href="https://www.tiktok.com/@musicbysluke" target="_blank" rel="noopener noreferrer">
-                        <h1><i class="bi bi-tiktok"></i></h1>
-                    </a>
-                    <a href="https://soundcloud.com/slukemusicc" target="_blank" rel="noopener noreferrer">
-                        <h1><i class="bi bi-soundwave"></i></h1>
-                    </a>
-                </div>
-
-            </div>
-        </footer>
+        <?php include './COMMON/footer.php'; ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

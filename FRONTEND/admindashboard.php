@@ -20,6 +20,7 @@ if (!isset($_SESSION['admin'])) {
 </head>
 
 <body class="bg-dark text-light  mt-5 pt-5">
+    <?php include '../COMMON/spinner.php'; ?>
     <nav id="navbar" class="navbar navbar-expand-lg navbar-primary bg-light fixed-top">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand" href="../index.php#home">

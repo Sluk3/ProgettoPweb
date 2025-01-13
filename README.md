@@ -4,17 +4,17 @@
 
 -   **Luca Giulio Stabile** -- 09821A -
     lucagiulio.stabile@studenti.unimi.it
--   **Mateo Simon Sonnergren** - M10500A -
+-   Mateo Simon Sonnergren - M10500A -
     mateosimon.sonnergren@studenti.unimi.it
--   **Marius Trandafir** - 12656A - <marius.trandafir@studenti.unimi.it>
+-   Marius Trandafir - 12656A - <marius.trandafir@studenti.unimi.it>
 
 ## Indice
 
-1.  [Introduzione](#introduzione)
-2.  [Dominio Applicativo](#dominio-applicativo)
-3.  [Prodotti Offerti](#prodotti-offerti)
-4.  [Requisiti Funzionali](#Requisiti-Funzionali)
-5.  [Configurazione del Database](#configurazione-del-Database)
+1.  [Configurazione del Database](#configurazione-del-database)
+2.  [Introduzione](#configurazione-del-database)
+3.  [Dominio Applicativo](#dominio-applicativo)
+4.  [Prodotti Offerti](#prodotti-offerti)
+5.  [Requisiti Funzionali](#Requisiti-Funzionali)
 6.  [Schema ER e Vincoli della Base di Dati](#schema-er)
 7.  [Tecnologie Utilizzate](#tecnologie-utilizzate)
 
@@ -36,6 +36,38 @@
 -   Pagina index migliorata esteticamente e di contenuto
 -   Aggiunto flag active al prodotto per permettere la visualizzazione o
     non all'utente
+-   Creati I file common footer e spinner per consentire maggiore
+    modularità
+
+## Configurazione del Database
+
+**Per far funzionare l'account è necessario creare un utente con tutti i
+privilegi sul database che ha lo stesso nome utente e password forniti,
+altrimenti la connessione al db per modificare le dashboard sarà negata.
+[(CONSIGLIATO)]{.mark} Se si vuole rinunciare a questa sicurezza
+aggiuntiva commentare le line 88 e 91 in COMMON/utility.php**
+
+**Il file SQL si trova nella cartella COMMON.**
+
+**Se il DB NON ha il nome "prweb1", modificarlo nella funzione**
+`dbConnect` in `COMMON``/``utility.php` **alla linea 86.**
+
+**É fortemente consigliato aumentare il limite di dimensione massima di
+upload php fino almeno a 100 mB per consentire il corretto funzionamento
+dei caricamenti**
+
+### Credenziali Admin per il Professor Mesiti
+
+È stato previsto un account admin e un account user per il Professor
+Mesiti in modo da fargli testare le funzionalità admin in prima persona.
+Le password sono criptate, quindi non è possible aggirare I regex
+inserendo da phpMyAdmin le password richieste.
+
+Credenziali Admin: - **User**: MMesiti - **Password**: PwebMesiti1!
+
+Credenziali User: - **User**: Anna - **Password**: Sonoanna1!
+
+**Anna non è stata autorizzata di proposito**
 
 ## Introduzione
 
@@ -249,25 +281,6 @@ Stabile.**
 4.  Conferma utente automatizzata tramite mail
 5.  Newsletter funzionante
 
-## Configurazione del Database
-
-**Per far funzionare l'account è necessario creare un utente con tutti i
-privilegi sul database che ha lo stesso nome utente e password forniti,
-altrimenti la connessione al db per modificare le dashboard sarà negata.
-Se si vuole rinunciare a questa sicurezza aggiuntiva commentare le line
-92 e 95 in BACKEND/utility.php**
-
-**Il file SQL si trova nella cartella DBimport.**
-
-**Se il DB NON ha il nome "prweb1", modificarlo nella funzione**
-`dbConnect` in `BACKEND/utility.php` **alla linea 90.**
-
-### Credenziali Admin per il Professor Mesiti
-
-È stato previsto un account admin per il Professor Mesiti in modo da
-fargli testare le funzionalità admin in prima persona. Credenziali: -
-**User**: MMesiti - **Password**: PwebMesiti1!
-
 ## Schema ER
 
 In notazione di Chen:![](media/image1.jpeg){width="6.8590277777777775in"
@@ -453,4 +466,4 @@ height="2.3131944444444446in"}
     -   Prevenzione SQL injection
 3.  Protezione Contenuti
     -   Protezione file audio
-    -   Download sicuri 
+    -   Download sicuri

@@ -12,6 +12,31 @@ $conn = dbConnect();
 $data = json_decode(file_get_contents("php://input"), true);
 $query = "";
 switch ($data['action']) {
+    case 'increase':
+        $found = false;
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($data['id'] == $item['id']) {
+                $query = "UPDATE order_detail SET quantity = quantity + 1 WHERE order_id = ? AND prod_id = ?";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("is", $item['order_id'], $data['id']);
+                $stmt->execute();
+                $stmt->close();
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $query = "INSERT INTO order_detail (order_id, prod_id, quantity) VALUES (?, ?, 1)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("is", $_SESSION['orid'], $data['id']);
+            $stmt->execute();
+            $stmt->close();
+        }
+        loadCart($conn, 'refresh');
+
+        echo json_encode(['success' => true, 'message' => "Product added"]);
+        exit();
+
     case 'add':
         if (isset($_SESSION['cart'])) {
             $found = false;
@@ -34,7 +59,9 @@ switch ($data['action']) {
                 $stmt->close();
             }
             loadCart($conn, 'refresh');
-            echo json_encode(['success' => true]);
+            $content = displayCartjs();
+            echo json_encode(['success' => true, 'message' => "Product added", 'content' => $content]);
+            exit();
         } else {
             $query = "INSERT INTO order_head (username, confirmed) VALUES (?, 0)";
             $stmt = $conn->prepare($query);
@@ -49,8 +76,10 @@ switch ($data['action']) {
             $stmt->execute();
             $stmt->close();
 
-            loadCart($conn, 'refresh');
-            echo json_encode(['success' => true]);
+            loadCart($conn, 'load');
+            $content = displayCartjs();
+            echo json_encode(['success' => true, 'message' => "Product added", 'content' => $content]);
+
             exit();
         }
         break;
@@ -69,7 +98,7 @@ switch ($data['action']) {
             }
 
             loadCart($conn, 'refresh');
-            echo json_encode(['success' => true]);
+            echo json_encode(['success' => true, 'message' => 'Product removed from cart']);
             exit();
         }
         break;
@@ -87,7 +116,7 @@ switch ($data['action']) {
             if ($stmt->execute()) {
                 $stmt->close();
                 loadCart($conn, 'refresh');
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'message' => 'Quantity decreased']);
                 exit();
             }
         } else {
@@ -97,7 +126,7 @@ switch ($data['action']) {
             if ($stmt->execute()) {
                 $stmt->close();
                 loadCart($conn, 'refresh');
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'message' => 'Product removed from cart']);
                 exit();
             }
         }

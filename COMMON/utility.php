@@ -1257,7 +1257,7 @@ function displayCart()
     $totprice = 0;
     if (isset($_SESSION['cart'])) {
         if (count($_SESSION['cart']) > 0) {
-            echo '<div class="container">';
+            echo '<div class="container" id="cartcontent">';
             foreach ($_SESSION['cart'] as $row) {
                 cartItem($row);
                 $totprice += $row['price'] * $row['quantity'];
@@ -1265,7 +1265,7 @@ function displayCart()
             echo '
                             <hr>
                             <div class="container d-flex justify-content-end">
-                                <h2>Total price: €' . number_format($totprice, 2) . '</h2>
+                                <h2 id="totprice">Total price: €' . number_format($totprice, 2) . '</h2>
             
                             </div>
                             <div class="container d-grid mt-2">
@@ -1273,23 +1273,56 @@ function displayCart()
                             </div>
                         </div>';
         } else {
-            echo '<div class="container text-center">
-            <h1 class="text-center text-primary">Your cart is empty!</h1>
-            <h3 class="text-center">Let\'s go to the <a class="text-secondary" href="./FRONTEND/products.php">shop</a> to add some products!</h3>
-        </div>';
+
+            $empty = strpos($_SERVER['REQUEST_URI'], 'index.php')  ? './COMMON/emptyCart.php' : '../COMMON/emptyCart.php';
+            include($empty);
         }
     } else {
-        echo '<div class="container text-center">
-            <h1 class="text-center text-primary">Your cart is empty!</h1>
-            <h3 class="text-center">Let\'s go to the <a class="text-secondary" href="./FRONTEND/products.php">shop</a> to add some products!</h3>
-        </div>';
+        $empty = strpos($_SERVER['REQUEST_URI'], 'index.php')  ? './COMMON/emptyCart.php' : '../COMMON/emptyCart.php';
+        include($empty);
     }
+}
+function displayCartjs()
+{
+
+    $output = '';
+    $totprice = 0;
+    if (isset($_SESSION['cart'])) {
+        if (count($_SESSION['cart']) > 0) {
+            $output .= '<div class="container" id="cartcontent">';
+            foreach ($_SESSION['cart'] as $row) {
+                $output .= cartItemjs($row);
+                $totprice += $row['price'] * $row['quantity'];
+            }
+            $output .= '
+                            <hr>
+                            <div class="container d-flex justify-content-end">
+                                <h2 id="totprice">Total price: €' . number_format($totprice, 2) . '</h2>
+            
+                            </div>
+                            <div class="container d-grid mt-2">
+                            <button type="button" id="pay" class="btn btn-primary" onclick="addTocart(\'\',\'checkout\')">Place Order</button>
+                            </div>
+                        </div>';
+        } else {
+            ob_start();
+            $empty = strpos($_SERVER['REQUEST_URI'], 'index.php')  ? './COMMON/emptyCart.php' : '../COMMON/emptyCart.php';
+            include($empty);
+            $output .= ob_get_clean();
+        }
+    } else {
+        ob_start();
+        $empty = strpos($_SERVER['REQUEST_URI'], 'index.php')  ? './COMMON/emptyCart.php' : '../COMMON/emptyCart.php';
+        include($empty);
+        $output .= ob_get_clean();
+    }
+    return $output;
 }
 function cartItem($row)
 {
     $imgSrc = (basename($_SERVER['PHP_SELF']) == 'index.php') ? './IMG/studio.jpg' : '../IMG/studio.jpg';
     echo '
-                <div class="card mb-3" style="max-height: 130px, overflow: hidden;">
+                <div class="card mb-3" id="cartitem' . $row['id'] . '" style="max-height: 130px, overflow: hidden;">
                     <div class="row g-0">
                         <div class="col-4 d-flex  align-items-start">
                             <img src="' . $imgSrc . '" class="m-2 img-fluid rounded-start " alt="...">
@@ -1304,53 +1337,16 @@ function cartItem($row)
                                 <div class="row d-flex" >
                                 <div class="col card-text fw-light fs-6 text-truncate">
                                 <p class="">' . $row['name'] . '</p>
-                                ';
-
-    /* switch (true) {
-        case $row['type_id'] == 1:
-            echo ' <p class="card-text fw-light fs-6">' . $row['genre'] . '<br>
-                    <i class="bi bi-music-note"></i>BPM:' . $row['bpm'] . '  <i class="bi bi-key-fill"></i> Key: ' . $row['tonality'] . '<br>
-            ';
-
-            break;
-        case $row['type_id'] == 2 || $row['type_id'] == 3:
-            echo ' <p class="card-text fw-light fs-6">' . $row['genre'] . '</p>
-                    <p class="card-text fw-light fs-6"><i class="bi bi-music-note"></i> Samples number:' . $row['num_sample'] . '<br>
-            ';
-            break;
-        case $row['type_id'] == 4:
-            echo ' <p class="card-text fw-light fs-6"><i class="bi bi-boombox-fill"></i> Type: ' . $row['genre'] . '<br>
-                    
-            ';
-            break;
-        case $row['type_id'] == 5:
-            echo ' 
-                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Max stems number: ' . $row['num_tracks'] . '<br>
-            ';
-            break;
-        case $row['type_id'] == 6:
-            echo ' 
-                    <p class="card-text fw-light fs-6"><i class="bi bi-cassette"></i> Tracks: ' . $row['num_tracks'] . '<br>
-            ';
-            break;
-        default:
-            # code...
-            break;
-    } */
-
-
-    echo '
-                                
                                     <div class="input-group" style="max-width: 200px;">
-                                        <button class="btn btn-outline-primary" type="button" ' . ($row['quantity'] <= 1 ?  'disabled' : '') . ' onclick="addTocart(\'' . $row['id'] . '\',\'decrease\')">-</button>
-                                        <input type="number" class="form-control text-center" disabled value="' . $row['quantity'] . '" min="1" id="quantity">
-                                        <button class="btn btn-outline-primary" type="button" onclick="addTocart(\'' . $row['id'] . '\',\'add\')">+</button>
+                                        <button class="btn btn-outline-primary" id="decrease" type="button" ' . ($row['quantity'] <= 1 ?  'disabled' : '') . ' onclick="addTocart(\'' . $row['id'] . '\',\'decrease\')">-</button>
+                                        <input type="number" class="form-control text-center quantity" disabled value="' . $row['quantity'] . '" min="1" id="quantity">
+                                        <button class="btn btn-outline-primary" id="increase" type="button" onclick="addTocart(\'' . $row['id'] . '\',\'increase\')">+</button>
                                     </div>
 
                                 
                                 </div>
                                 <div class="col-auto d-flex justify-content-end align-items-end">
-                                <p class="card-text ">€' . number_format($row['price'], 2) . '</p>
+                                <p class="card-text itemprice" >€' . number_format($row['price'], 2) . '</p>
                                 </div>
                                 </div>
                             </div>
@@ -1358,7 +1354,42 @@ function cartItem($row)
                     </div>
                 </div>';
 }
+function cartItemjs($row)
+{
+    $imgSrc = (basename($_SERVER['PHP_SELF']) == 'index.php') ? './IMG/studio.jpg' : '../IMG/studio.jpg';
+    return '
+                <div class="card mb-3" id="cartitem' . $row['id'] . '" style="max-height: 130px, overflow: hidden;">
+                    <div class="row g-0">
+                        <div class="col-4 d-flex  align-items-start">
+                            <img src="' . $imgSrc . '" class="m-2 img-fluid rounded-start " alt="...">
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <div class=" d-flex justify-content-between text-truncate">
+                                <h5 class="card-title text-truncate">' . $row['title'] . '</h5>
+                                <a class="btn icon-link" onclick="addTocart(\'' . $row['id'] . '\',\'delete\')"><i class="bi bi-trash3"></i>
+                                </a> 
+                                </div>
+                                <div class="row d-flex" >
+                                <div class="col card-text fw-light fs-6 text-truncate">
+                                <p class="">' . $row['name'] . '</p>
+                                    <div class="input-group" style="max-width: 200px;">
+                                        <button class="btn btn-outline-primary" id="decrease" type="button" ' . ($row['quantity'] <= 1 ?  'disabled' : '') . ' onclick="addTocart(\'' . $row['id'] . '\',\'decrease\')">-</button>
+                                        <input type="number" class="form-control text-center quantity" disabled value="' . $row['quantity'] . '" min="1" id="quantity">
+                                        <button class="btn btn-outline-primary" id="increase" type="button" onclick="addTocart(\'' . $row['id'] . '\',\'increase\')">+</button>
+                                    </div>
 
+                                
+                                </div>
+                                <div class="col-auto d-flex justify-content-end align-items-end">
+                                <p class="card-text itemprice" >€' . number_format($row['price'], 2) . '</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+}
 // Funzione per ottenere i file referenziati nel database
 function getReferencedFiles($conn, $table, $column)
 {

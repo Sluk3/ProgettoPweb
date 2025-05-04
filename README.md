@@ -4,9 +4,6 @@
 
 -   **Luca Giulio Stabile** -- 09821A -
     lucagiulio.stabile@studenti.unimi.it
--   Mateo Simon Sonnergren - M10500A -
-    mateosimon.sonnergren@studenti.unimi.it
--   Marius Trandafir - 12656A - <marius.trandafir@studenti.unimi.it>
 
 ## Indice
 
